@@ -1,5 +1,4 @@
 import {createMuiTheme, Theme} from '@material-ui/core/styles';
-import { dark } from '@material-ui/core/styles/createPalette';
 
 const colours = {
     primary: "#524947",
@@ -44,7 +43,7 @@ const mainTheme: Theme = createMuiTheme({
     },
     shape: {
         borderRadius: 2,
-    }
+    },
 })
 
 export default mainTheme;

@@ -1,0 +1,1 @@
+export const MOVE_TOKEN = 'MOVE_TOKEN'

@@ -1,33 +1,18 @@
 import React from 'react';
 import {AppBar, makeStyles, Toolbar, Typography, Theme, Button, Container} from '@material-ui/core';
-import { Link as RouterLink } from "react-router-dom";
+import { Link, Link as RouterLink } from "react-router-dom";
+import mainPages from "../common/mainPages";
 
 const useStyles = makeStyles((theme: Theme) => ({
-    header: {
-        backgroundColor: theme.palette.primary.main,
+    logo: {
+        marginRight: theme.spacing(5),
+        textDecoration: "none",
     }
-}))
+}));
 
-const headerData = [
-    {
-        label: "Map",
-        href: "/map",
-    },
-    {
-        label: "Characters",
-        href: "/characters",
-    },
-    {
-        label: "Campaigns",
-        href: "/campaigns",
-    },
-    {
-        label: "Monsters",
-        href: "/monsters",
-    }
-]
-
+const headerData = mainPages
 const Header = () => {
+    const { logo } = useStyles();
 
     const getMenuButtons = () => {
         return headerData.map(({label, href}) => {
@@ -38,6 +23,7 @@ const Header = () => {
                         color: "inherit",
                         to: href,
                         component: RouterLink,
+                        
                     }}
                 >
                     {label}
@@ -51,7 +37,7 @@ const Header = () => {
             <AppBar>
                 <Container maxWidth="xl">
                     <Toolbar>
-                        <Typography variant="h6">Definitely Not DND</Typography>
+                        <Typography variant="h5" className={logo} component={Link} to={"/"} color="inherit">Definitely Not DND</Typography>
                         {getMenuButtons()}    
                     </Toolbar> 
                 </Container>
