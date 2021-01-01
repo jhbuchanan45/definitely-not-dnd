@@ -26,7 +26,7 @@ const Grid = (props: any) => {
     const tileRef = useRef(null);
     
     return (
-        <Draggable nodeRef={tileRef} handle=".gridTile">
+        <Draggable nodeRef={tileRef} handle=".gridTile" defaultPosition={props.grid.pos}>
             <div className={grid} ref={tileRef}>
                 <div className={gridInner}>
                     <Tiles />
@@ -41,9 +41,14 @@ const mapStateToProps = state => {
         sqSize: state.map.sqSize,
         grid: {
             height: state.map.tiles.length,
-            width: state.map.tiles[0].length
+            width: state.map.tiles[0].length,
+            pos: {...state.map.pos}
         }
     }
+}
+
+const mapPropsToDispatch = () => {
+
 }
 
 export default connect(mapStateToProps, null)(Grid);

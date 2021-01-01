@@ -1,9 +1,16 @@
-import { MOVE_TOKEN } from './mapTypes';
+import { MOVE_TOKEN, MOVE_MAP } from './mapTypes';
 import { token } from './IMap';
 
 export const moveToken = (token: token, pos: {x:number, y:number}) => (
     {
         type: MOVE_TOKEN,
         payload: {token, pos},
+    }
+)
+
+export const moveMap = (pos: {x: number, y:number}) => (
+    {
+        type: MOVE_MAP,
+        payload: pos,
     }
 )

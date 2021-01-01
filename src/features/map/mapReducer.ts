@@ -1,4 +1,4 @@
-import { MOVE_TOKEN } from './mapTypes';
+import { MOVE_TOKEN, MOVE_MAP } from './mapTypes';
 import { tile, token } from './IMap';
 import SnowflakeId from 'snowflake-id';
 import produce from 'immer';
@@ -38,12 +38,16 @@ const defaultToken: token = {
 
 // ACTUAL REDUCERS
 
+// TODO - Add reducer to update position of map from draggable and scale
+
 const initialState = {
     id: 0,
     tiles: mapTiles,
     tokens: mapTokens,
     sqSize: 25,
     selectedToken: defaultToken,
+    scale: 1,
+    pos: {x: 0, y:0},
 }
 
 export default (state: any = initialState, action) => {
@@ -51,9 +55,14 @@ export default (state: any = initialState, action) => {
         switch (action.type) {
 
         case MOVE_TOKEN: {
-                draft.tokens[action.token].pos = {...action.pos}
-                break;
-            }
+            draft.tokens[action.token].pos = {...action.pos}
+            break;
+        }
+
+        case MOVE_MAP: {
+            draft.pos = {...action.pos}
+            break;
+        }
 
         default:
             break;
