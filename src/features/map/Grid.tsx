@@ -8,7 +8,7 @@ import { moveMap } from './mapActions';
 
 const useStyles = makeStyles((theme: Theme) => ({
     grid: {
-        overflow: "hidden",
+        overflow: "visible",
         position: "absolute",
         boxSizing: "border-box",
         width: (props: any) => {return (props.sqSize * props.grid.width) + "px"},
@@ -35,6 +35,7 @@ const Grid = (props: any) => {
             <div className={grid} ref={tileRef}>
                 <div className={gridInner}>
                     <Tiles />
+                    <Tokens />
                 </div>
             </div>
         </Draggable>

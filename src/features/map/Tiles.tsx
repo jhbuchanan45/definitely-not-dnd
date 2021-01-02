@@ -22,7 +22,7 @@ const Tiles = (props: any) => {
 
         for (let x=0; x < props.tiles.x; x++) {
             tiles.push((
-                <Tile x={x} y={y} />
+                <Tile key={x+ "-" + y} x={x} y={y} />
             ))
         }
 
@@ -34,7 +34,7 @@ const Tiles = (props: any) => {
 
         for (let y=0; y < props.tiles.y; y++) {
             rows.push((
-                <div className={gridRow}>
+                <div key={"row-" + y} className={gridRow}>
                     {renderTiles(y)}
                 </div>
             ))
