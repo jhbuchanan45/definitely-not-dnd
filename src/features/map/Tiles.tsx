@@ -17,30 +17,42 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Tiles = (props: any) => {
     const {gridRow} = useStyles();
 
+    const renderTiles = (y: number) => {
+        const tiles = Array();
+
+        for (let x=0; x < props.tiles.x; x++) {
+            tiles.push((
+                <Tile x={x} y={y} />
+            ))
+        }
+
+        return tiles;
+    }
+
+    const renderRows = () => {
+        const rows = Array();
+
+        for (let y=0; y < props.tiles.y; y++) {
+            rows.push((
+                <div className={gridRow}>
+                    {renderTiles(y)}
+                </div>
+            ))
+        }
+
+        return rows;
+    }
+
     return (
         <>
-        {
-            props.tiles.map((row: tile[], y:number) => {
-                return (
-                    <div className={gridRow}>
-                    {
-                        row.map((tile: tile, x: number) => {
-                            return (<Tile tile={tile} key={x+"-"+y} size={props.sqSize} />)
-                        })
-                    }
-                    </div>
-                    )
-                }
-            )
-        }
+        {renderRows()}
         </>
     )
 }
 
 const mapStateToProps = state => {
     return {
-        tiles: state.map.tiles,
-        sqSize: state.map.sqSize
+        tiles: {x: state.map.tiles.length, y: state.map.tiles[0].length},
     }
 }
 

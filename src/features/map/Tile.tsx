@@ -1,11 +1,7 @@
 import { makeStyles, Theme } from '@material-ui/core';
 import React from 'react';
+import { connect } from 'react-redux';
 import {tile} from './IMap';
-
-interface tileProps {
-    tile: tile,
-    size: number
-}
 
 const useStyles = makeStyles((theme: Theme) => ({
     tile: (props: any) => {
@@ -21,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   }))
 
-const Tile = (props: tileProps) => {
+const Tile = (props: any) => {
     const { tile } = useStyles(props);
 
     return (
@@ -30,4 +26,11 @@ const Tile = (props: tileProps) => {
     )
 }
 
-export default Tile;
+const mapStateToProps = (state: any, ownProps: any) => {
+    return {
+        tile: state.map.tiles[ownProps.y][ownProps.x],
+        size: state.map.sqSize
+    }
+}
+
+export default connect(mapStateToProps, null)(Tile);
