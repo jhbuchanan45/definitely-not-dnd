@@ -1,4 +1,4 @@
-import { makeStyles, Theme } from '@material-ui/core';
+import { makeStyles, Theme, Tooltip } from '@material-ui/core';
 import React, { useRef } from 'react';
 import Draggable from 'react-draggable';
 import { connect } from 'react-redux';
@@ -18,24 +18,38 @@ const useStyles = makeStyles((theme: Theme) => ({
             cursor: "pointer"
         }
     },
+    tooltip: {
+        backgroundColor: theme.palette.primary.dark,
+        opacity: 1,
+        color: theme.palette.text.secondary,
+        padding: "1px 5px"
+    },
+    tooltipPlacementBottom: {
+        margin: "6px 0",
+    },
+    arrow: {
+        color: theme.palette.primary.dark,
+        opacity: 1
+    }
   }))
 
 const Token = (props) => {
-    const { token } = useStyles(props);
+    const { token, tooltip, arrow, tooltipPlacementBottom } = useStyles(props);
 
     const tokenRef = useRef(null);
 
     const draggableProps = {
         nodeRef: tokenRef,
-        // bounds: "makeStyles-map-6",
         defaultPosition: {x: props.token.pos.x*props.sqSize, y: props.token.pos.y*props.sqSize},
         // handle: token,
     }
 
     return (
         <Draggable {...draggableProps}>
-            <div ref={tokenRef} className={token}>
-            </div>
+            <Tooltip title={props.token.name} aria-label="add" arrow classes={{tooltip, arrow, tooltipPlacementBottom}}>
+                <div ref={tokenRef} className={token}>
+                </div>
+            </Tooltip>
         </Draggable>
     )
 }

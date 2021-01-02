@@ -22,9 +22,7 @@ WORKDIR /dnd-map-files
 # clones only main (production branch)
 RUN git clone --branch main --single-branch git@github.com:jhbuchanan45/definitely-not-dnd.git /dnd-map-files
 RUN chmod -R 774 /dnd-map-files
-RUN npm install
 RUN npm install -g serve
-RUN npm run build
 
 EXPOSE 5000
-CMD serve -s build
+CMD ["sh" , "-c" , "npm install ; npm run build ; serve -s build"]
