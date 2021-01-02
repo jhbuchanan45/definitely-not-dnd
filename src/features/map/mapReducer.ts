@@ -55,12 +55,12 @@ export default (state: any = initialState, action) => {
         switch (action.type) {
 
         case MOVE_TOKEN: {
-            draft.tokens[action.token].pos = {...action.pos}
+            draft.tokens.find((token: token) => (token.id === action.payload.token.id)).pos = {...action.payload.pos};
             break;
         }
 
         case MOVE_MAP: {
-            draft.pos = {...action.pos}
+            draft.pos = {x: action.payload.x, y: action.payload.y};
             break;
         }
 

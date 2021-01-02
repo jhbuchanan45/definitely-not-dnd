@@ -3,7 +3,8 @@ import React, { useRef } from 'react';
 import Tiles from './Tiles';
 import Tokens from './Tokens';
 import { connect } from 'react-redux';
-import Draggable from 'react-draggable';
+import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
+import { moveMap } from './mapActions';
 
 const useStyles = makeStyles((theme: Theme) => ({
     grid: {
@@ -24,9 +25,13 @@ const Grid = (props: any) => {
     const { grid, gridInner } = useStyles(props);
 
     const tileRef = useRef(null);
+
+    const onMapDragStop = (e: DraggableEvent, data: DraggableData) => {
+        props.moveMap({x: data.x, y: data.y});
+    }
     
     return (
-        <Draggable nodeRef={tileRef} handle=".gridTile" defaultPosition={props.grid.pos}>
+        <Draggable nodeRef={tileRef} handle=".gridTile" defaultPosition={props.grid.pos} onStop={onMapDragStop}>
             <div className={grid} ref={tileRef}>
                 <div className={gridInner}>
                     <Tiles />
@@ -42,13 +47,15 @@ const mapStateToProps = state => {
         grid: {
             height: state.map.tiles.length,
             width: state.map.tiles[0].length,
-            pos: {...state.map.pos}
-        }
+            pos: {...state.map.pos},
+        },
     }
 }
 
-const mapPropsToDispatch = () => {
-
+const mapPropsToDispatch = (dispatch: any) => {
+    return {
+        moveMap: (pos: {x:number,y:number}) => dispatch(moveMap(pos))
+    }
 }
 
-export default connect(mapStateToProps, null)(Grid);
+export default connect(mapStateToProps, mapPropsToDispatch)(Grid);

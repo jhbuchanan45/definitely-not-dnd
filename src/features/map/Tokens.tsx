@@ -1,6 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const Tokens = () => {
+const Tokens = (props: any) => {
     return (
         <div>
             
@@ -8,4 +9,10 @@ const Tokens = () => {
     )
 }
 
-export default Tokens;
+const mapStateToProps = state => {
+    return {
+        tokens: state.map.tokens,
+    }
+}
+
+export default connect(mapStateToProps, null)(Tokens);
