@@ -1,4 +1,4 @@
-import { MOVE_TOKEN, MOVE_MAP } from './mapTypes';
+import { MOVE_TOKEN, MOVE_MAP, SELECT_TOKEN } from './mapTypes';
 import { tile, token } from './IMap';
 import SnowflakeId from 'snowflake-id';
 import produce from 'immer';
@@ -61,6 +61,11 @@ export default (state: any = initialState, action) => {
 
         case MOVE_MAP: {
             draft.pos = {x: action.payload.x, y: action.payload.y};
+            break;
+        }
+
+        case SELECT_TOKEN: {
+            draft.selectedToken = action.payload
             break;
         }
 
