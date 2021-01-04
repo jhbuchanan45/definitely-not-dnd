@@ -1,4 +1,4 @@
-import { MOVE_TOKEN, MOVE_MAP, SELECT_TOKEN } from './mapTypes';
+import { MOVE_TOKEN, MOVE_MAP, SELECT_TOKEN, TOGGLE_SIDEBAR } from './mapTypes';
 import { tile, token } from './IMap';
 import SnowflakeId from 'snowflake-id';
 import produce from 'immer';
@@ -48,6 +48,8 @@ const initialState = {
     selectedToken: defaultToken,
     scale: 1,
     pos: {x: 0, y:0},
+    sidebarExpanded: true,
+
 }
 
 export default (state: any = initialState, action) => {
@@ -66,6 +68,11 @@ export default (state: any = initialState, action) => {
 
         case SELECT_TOKEN: {
             draft.selectedToken = action.payload
+            break;
+        }
+
+        case TOGGLE_SIDEBAR: {
+            draft.sidebarExpanded = state.sidebarExpanded ? false : true;
             break;
         }
 

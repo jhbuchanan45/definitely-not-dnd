@@ -1,6 +1,6 @@
 import React from 'react';
 import Grid from './Grid';
-import Sidebar from './Sidebar';
+import Sidebar from './sidebar/Sidebar';
 import { makeStyles, Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({

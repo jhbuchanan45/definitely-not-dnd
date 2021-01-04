@@ -4,7 +4,9 @@ const colours = {
     primary: "#524947",
     secondary: "#D9907C",
     text: "#52362F",
-    info: "#D1BBB5"
+    info: "#D1BBB5",
+    darkInfo: "#91837E",
+    lightInfo: "#DEC7C1"
 }
 
 const mainTheme: Theme = createMuiTheme({
@@ -33,6 +35,8 @@ const mainTheme: Theme = createMuiTheme({
         },
         info: {
             main: colours.info,
+            dark: colours.darkInfo,
+            light: colours.lightInfo
         },
             background: {
                 paper: colours.info,

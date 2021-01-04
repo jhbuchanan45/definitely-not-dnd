@@ -1,4 +1,4 @@
-import { MOVE_TOKEN, MOVE_MAP, SELECT_TOKEN } from './mapTypes';
+import { MOVE_TOKEN, MOVE_MAP, SELECT_TOKEN, TOGGLE_SIDEBAR } from './mapTypes';
 import { token } from './IMap';
 
 export const moveToken = (token: token, pos: {x:number, y:number}) => (
@@ -19,5 +19,11 @@ export const selectToken = (payload:token) => (
     {
         type: SELECT_TOKEN,
         payload
+    }
+)
+
+export const toggleSidebar = () => (
+    {
+        type: TOGGLE_SIDEBAR,
     }
 )
