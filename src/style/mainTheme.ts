@@ -23,6 +23,7 @@ const mainTheme: Theme = createMuiTheme({
         type: 'dark',
         common: {
             white: "#020002",
+            black: "#2F4F4F"
         },
         primary: {
             main: colours.primary,

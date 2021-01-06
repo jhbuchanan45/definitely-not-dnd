@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         return {
             width: props.token.size + "px",
             height: props.token.size + "px",
-            background: "blue",
+            background: "lightblue url(" + props.token.image + ") no-repeat center 0px/" + props.token.size + "px",
             border: "2px solid grey",
             position: "absolute",
             left: "0px",

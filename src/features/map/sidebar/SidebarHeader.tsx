@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         borderRadius: theme.shape.borderRadius,
         margin: "2px",
         padding: "1px",
-        transition: "transform 0.2s"
+        transition: "transform 0.1s"
     },
     closedButton: {
         transform: "rotate(180deg)",
@@ -25,43 +25,39 @@ const useStyles = makeStyles((theme: Theme) => ({
     expandedButton: {
         transform: "rotate(0)"
     }
-  }))
+}))
 
 const SidebarHeader = (props: sidebarProps) => {
     const { header, iconButton, expandedButton, closedButton } = useStyles();
 
     const headerType = () => {
-            return (
-                <Grid className={header} container direction="row" alignItems="center" justify="space-between">
-            <Grid item>
-                <IconButton className={iconButton + " " + (props.expanded ? expandedButton : closedButton)} onClick={() => {console.log("clicked!"); props.toggleVisibility()}} size="small">
-                    <DoubleArrowRounded fontSize="small" color="action" />
-                </IconButton>
-            </Grid>
-            {
-                props.expanded ? (<Grid item>
-                    <IconButton className={iconButton} size="small">
-                        <Launch fontSize="small" color="action" />
+        return (
+            <Grid className={header} container direction="row" alignItems="center" justify="space-between">
+                <Grid item>
+                    <IconButton disableRipple className={iconButton + " " + (props.expanded ? expandedButton : closedButton)} onClick={() => {props.toggleVisibility() }} size="small">
+                        <DoubleArrowRounded fontSize="small" color="action" />
                     </IconButton>
-                </Grid>) : null
-            }
-        </Grid>
-            )
+                </Grid>
+                {
+                    props.expanded ? (<Grid item>
+                        <IconButton className={iconButton} size="small">
+                            <Launch fontSize="small" color="action" />
+                        </IconButton>
+                    </Grid>) : null
+                }
+            </Grid>
+        )
     }
 
     return (
         <>
-        {headerType()}
+            {headerType()}
         </>
     )
 }
-
-const mapStateToProps = (state) => ({
-    expanded: state.map.sidebarExpanded,
-})
 
 const mapDispatchToProps = (dispatch: any) => ({
     toggleVisibility: () => dispatch(toggleSidebar()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SidebarHeader);
+export default connect(null, mapDispatchToProps)(SidebarHeader);

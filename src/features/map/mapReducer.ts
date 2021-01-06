@@ -2,6 +2,7 @@ import { MOVE_TOKEN, MOVE_MAP, SELECT_TOKEN, TOGGLE_SIDEBAR } from './mapTypes';
 import { tile, token } from './IMap';
 import SnowflakeId from 'snowflake-id';
 import produce from 'immer';
+import exTokens from './exTokens';
 
 // default tile properties
 const defaultTile: tile = {
@@ -19,19 +20,49 @@ mapTiles.forEach((el, ind, arr) => {
     arr[ind] = new Array(25).fill(defaultTile);
 })
 
-mapTiles[0] = mapTiles[0].map((tile) => {return {...tile, moveable:false}})
+mapTiles[0] = mapTiles[0].map((tile) => {return {...tile, moveable:false}});
 
-const snowflakeID = new SnowflakeId(); 
-
-const mapTokens: token[] = [
-{id: snowflakeID.generate(), name: "John", entity:{type: "player", id: 1, name: "John", maxHP: 10, defaultMovement: 30}, pos: {x: 5, y: 5}, size: 25},
-{id: snowflakeID.generate(), name: "Tim", entity:{type: "player", id: 2, name: "Tim", maxHP: 10, defaultMovement: 15}, pos: {x: 6, y: 12}, size: 25},
-{id: snowflakeID.generate(), name: "Gemima", entity:{type: "player", id: 3, name: "Gemima", maxHP: 13, defaultMovement: 35}, pos: {x: 20, y: 5}, size: 25}
-]
+const mapTokens: token[] = exTokens;
 
 const defaultToken: token = {
+    id: 0,
+    image: "",
     name: "No Token Selected",
-    entity: {type: "player", id: 0, name: "No Token", maxHP: 0},
+    race: "Null",
+    stats: {
+        level: 0,
+        key: {
+            base: {
+                END: 0,
+                STR: 0,
+                CHA: 0,
+                FNS: 0,
+                KNW: 0,
+                WIS: 0,
+                INT: 0,
+            },
+            modifier: {
+                END: 0,
+                STR: 0,
+                CHA: 0,
+                FNS: 0,
+                KNW: 0,
+                WIS: 0,
+                INT: 0,
+            },
+        },
+        alt: {
+            dge: 0,
+            bHP: 0,
+            arm: 0,
+        }
+    },
+    status: {
+        cHP: 0,
+        mHP: 0,
+        cStm: 0,
+        mStm: 0,
+    },
     pos: {x: 0, y: 0},
     size: 0,
 }

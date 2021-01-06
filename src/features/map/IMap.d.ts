@@ -6,14 +6,64 @@ export interface tile {
     size: number,
 }
 
+export interface keyStats {
+    END: number,
+    STR: number,
+    CHA: number,
+    FNS: number,
+    KNW: number,
+    WIS: number,
+    INT: number,
+}
+
+export interface altStats {
+    dge: number,
+    bHP: number,
+    arm: number,
+}
+
+export interface resistStats {
+    phy: number,
+    rng: number,
+    mag: number,
+}
+
 export interface token {
-    id?: number,
-    name: String,
-    entity: any,
+    id: any,
+    image: string,
+    name: string,
+    race: string,
+    stats: {
+        level: number,
+        key: {
+            base: keyStats,
+            modifier: keyStats,
+        },
+        alt: altStats,
+        resist?: resistStats,
+    },
+    status: {
+        cHP: number,
+        mHP: number,
+        mStm: number,
+        cStm: number
+    }
+    effects?: {
+        burning: boolean,
+        bleeding: boolean,
+    },
     pos: {x: number, y: number},
-    effects?: any[],
     size: number,
 }
+
+// export interface token {
+//     id?: number,
+//     name: String,
+//     entity: any,
+//     pos: {x: number, y: number},
+//     effects?: any[],
+//     size: number,
+// }
 
 export interface effect {
     id?: number,

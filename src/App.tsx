@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
 import Header from './features/header/Header';
 import { Container, Paper, Theme, makeStyles } from '@material-ui/core';

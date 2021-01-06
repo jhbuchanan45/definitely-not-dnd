@@ -14,7 +14,7 @@ const Tokens = (props: any) => {
 
 const mapStateToProps = state => {
     return {
-        tokens: state.map.tokens.map(token => (token.id)),
+        tokens: state.map.tokens.map(token => {console.log(token); return (token.id)}),
     }
 }
 
