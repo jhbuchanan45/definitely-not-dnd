@@ -65,7 +65,7 @@ const Token = (props) => {
 
 const mapStateToProps = (state:any, ownProps:any) => {
     return {
-        token: state.map.tokens.find((token: token) => (token.id === ownProps.id)),
+        token: state.map.tokens.find((token: token) => (token._id === ownProps.id)),
         sqSize: state.map.sqSize
     }
 }

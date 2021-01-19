@@ -17,7 +17,7 @@ ReactDOM.render(
     redirectUri={window.location.origin}
   >
     <React.StrictMode>
-      <Router >
+      <Router>
         <Provider store={store}>
           <ThemeProvider theme={mainTheme}>
             <App />

@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import Header from './features/header/Header';
 import { Container, Paper, Theme, makeStyles } from '@material-ui/core';
 import mainPages from "./features/common/mainPages";
 import Greeting from './features/greeting/Greeting';
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import LoadingSpinner from './features/common/loadingSpinner';
 
+const ProtectedRoute = ({ component, ...args }) => (
+  <Route component={withAuthenticationRequired(component)} {...args} />
+);
 
 const useStyles = makeStyles((theme: Theme) => ({
   bgContainer: {
@@ -30,10 +34,100 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const App = () => {
   const { bgContainer, innerContainer, screen, fullHeight } = useStyles();
-  const { isLoading } = useAuth0();
+  const { isLoading, getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    const getUserMetadata = async () => {
+
+      try {
+        const accessToken = await getAccessTokenSilently({
+          audience: `https://api.definitelynotdnd.com`,
+        });
+
+        const userDetailsByIdUrl = `${process.env.REACT_APP_API_DOMAIN}/token`;
+
+        const testNewToken = await fetch(userDetailsByIdUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            token: {
+              "image": "https://static.wikia.nocookie.net/halo/images/a/a9/H5G_Render_John117-Profile.png",
+              "name": "John",
+              "race": "Human",
+              "stats": {
+                "level": 3,
+                "key": {
+                  "base": {
+                    "STR": 20,
+                    "END": 16,
+                    "CHA": 9,
+                    "FNS": 10,
+                    "KNW": 12,
+                    "WIS": 10,
+                    "INT": 14
+                  },
+                  "modifier": {
+                    "STR": 5,
+                    "END": 2,
+                    "CHA": 2,
+                    "FNS": 2,
+                    "KNW": 0,
+                    "WIS": 2,
+                    "INT": 2
+                  }
+                },
+                "alt": {
+                  "dge": 3,
+                  "bHP": 10,
+                  "arm": 21
+                },
+                "resist": {
+                  "phy": 10,
+                  "rng": 10,
+                  "mag": 5
+                }
+              },
+              "status": {
+                "cHP": 10,
+                "mHP": 18,
+                "cStm": 5,
+                "mStm": 5
+              },
+              "pos": {
+                "x": 3,
+                "y": 5
+              },
+              "size": 25
+            }
+          })
+        })
+
+        // console.log(await testNewToken.json());
+
+        const getTokens = await fetch(userDetailsByIdUrl, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        const userMetadataTest = await getTokens.json();
+
+        console.log(userMetadataTest);
+
+        //   setUserMetadata(user_metadata);
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
+
+    getUserMetadata();
+  }, []);
 
   if (isLoading) {
-    return (<div>Loading...</div>)
+    return (<LoadingSpinner />)
   }
 
   return (
@@ -44,10 +138,10 @@ const App = () => {
           <Paper elevation={1} className={fullHeight}>
             {
               mainPages.map(({ href, component }) => {
-                return <Route key={href} path={href} component={component} />
+                return <ProtectedRoute key={href} path={href} component={component} />
               })
             }
-            <Route exact path="/" component={Greeting} />
+            <ProtectedRoute exact path="/" component={Greeting} />
           </Paper>
         </Container>
       </Container>

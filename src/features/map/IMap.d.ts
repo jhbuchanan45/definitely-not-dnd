@@ -28,8 +28,14 @@ export interface resistStats {
     mag: number,
 }
 
-export interface token {
-    id: any,
+interface savedToken {
+    _id: String,
+    ownerId: String,
+}
+
+export type token = token & tokenID;
+
+export interface baseToken {
     image: string,
     name: string,
     race: string,

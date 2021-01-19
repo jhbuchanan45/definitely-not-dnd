@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-const headerData = mainPages
+const headerData = mainPages;
+
 const Header = () => {
     const { logo } = useStyles();
     const { loginWithRedirect, isAuthenticated, logout } = useAuth0();

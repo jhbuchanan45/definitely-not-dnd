@@ -2,7 +2,7 @@ import { MOVE_TOKEN, MOVE_MAP, SELECT_TOKEN, TOGGLE_SIDEBAR } from './mapTypes';
 import { tile, token } from './IMap';
 import SnowflakeId from 'snowflake-id';
 import produce from 'immer';
-import exTokens from './exTokens';
+import exTokens from './exmTokens';
 
 // default tile properties
 const defaultTile: tile = {
@@ -25,7 +25,8 @@ mapTiles[0] = mapTiles[0].map((tile) => {return {...tile, moveable:false}});
 const mapTokens: token[] = exTokens;
 
 const defaultToken: token = {
-    id: 0,
+    _id: 0,
+    ownerId: "",
     image: "",
     name: "No Token Selected",
     race: "Null",
@@ -88,7 +89,7 @@ export default (state: any = initialState, action) => {
         switch (action.type) {
 
         case MOVE_TOKEN: {
-            draft.tokens.find((token: token) => (token.id === action.payload.token.id)).pos = {...action.payload.pos};
+            draft.tokens.find((token: token) => (token._id === action.payload.token._id)).pos = {...action.payload.pos};
             break;
         }
 

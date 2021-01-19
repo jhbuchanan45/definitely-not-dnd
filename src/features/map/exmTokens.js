@@ -1,6 +1,7 @@
 export default [
     {
-        "id": 6751877032507871232n,
+        "_id": "6751877032507871232",
+        "ownerId": "",
         "image": "https://static.wikia.nocookie.net/halo/images/a/a9/H5G_Render_John117-Profile.png",
         "name": "John",
         "race": "Human",
@@ -50,7 +51,8 @@ export default [
         "size": 25
     },
     {
-        "id": 6751877032507871233n,
+        "_id": "6751877032507871233",
+        "ownerId": "",
         "image": "https://pbs.twimg.com/media/EKBDttYWkAATV9T?format=jpg&name=900x900",
         "name": "Maria",
         "race": "Tiefling",
@@ -100,7 +102,8 @@ export default [
         "size": 25
     },
     {
-        "id": 6751877032507871234n,
+        "_id": "6751877032507871234",
+        "ownerId": "",
         "image": "https://static.wikia.nocookie.net/halo/images/a/a9/H5G_Render_John117-Profile.png",
         "name": "Jamison",
         "race": "Human",
