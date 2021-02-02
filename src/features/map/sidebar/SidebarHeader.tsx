@@ -2,7 +2,7 @@ import { Grid, Icon, IconButton, makeStyles, Theme, Typography } from '@material
 import React from 'react';
 import { DoubleArrowRounded, Launch } from '@material-ui/icons'
 import { connect } from 'react-redux';
-import { toggleSidebar } from '../mapActions';
+import { toggleSidebar } from '../../../redux/map/mapActions';
 
 interface sidebarProps {
     expanded: boolean,

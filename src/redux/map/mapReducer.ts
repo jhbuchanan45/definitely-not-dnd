@@ -1,8 +1,7 @@
 import { MOVE_TOKEN, MOVE_MAP, SELECT_TOKEN, TOGGLE_SIDEBAR } from './mapTypes';
-import { tile, token } from './IMap';
-import SnowflakeId from 'snowflake-id';
+import { tile, token } from '../../features/map/IMap';
 import produce from 'immer';
-import exTokens from './exmTokens';
+import exTokens from '../../features/map/exmTokens';
 
 // default tile properties
 const defaultTile: tile = {

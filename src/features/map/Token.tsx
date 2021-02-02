@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import Draggable, { DraggableData, DraggableEvent, DraggableEventHandler } from 'react-draggable';
 import { connect } from 'react-redux';
 import { token } from './IMap';
-import { moveToken, selectToken } from './mapActions';
+import { moveToken, selectToken } from '../../redux/map/mapActions';
 
 // TODO - Add asynchronously loading thumbnail images for tokens
 

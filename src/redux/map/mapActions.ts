@@ -1,5 +1,5 @@
 import { MOVE_TOKEN, MOVE_MAP, SELECT_TOKEN, TOGGLE_SIDEBAR } from './mapTypes';
-import { token } from './IMap';
+import { token } from '../../features/map/IMap';
 
 export const moveToken = (token: token, pos: {x:number, y:number}) => (
     {

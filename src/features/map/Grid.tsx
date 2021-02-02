@@ -4,7 +4,7 @@ import Tiles from './Tiles';
 import Tokens from './Tokens';
 import { connect } from 'react-redux';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
-import { moveMap } from './mapActions';
+import { moveMap } from '../../redux/map/mapActions';
 
 const useStyles = makeStyles((theme: Theme) => ({
     grid: {
