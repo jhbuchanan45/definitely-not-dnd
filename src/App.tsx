@@ -7,8 +7,10 @@ import Greeting from './features/greeting/Greeting';
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import LoadingSpinner from './features/common/loadingSpinner';
 import NotAuthenticated from './features/common/NotAuthenticated';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchUser } from './redux/user/userSlice';
+import authAPI from './features/common/authAPI';
+import { fetchCampaigns } from './redux/campaign/campaignSlice';
 
 const ProtectedRoute = ({ component, ...args }) => (
   <Route component={withAuthenticationRequired(component)} {...args} />
@@ -44,18 +46,10 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      await getAccessTokenSilently({
-        audience: `https://api.definitelynotdnd.com`,
-      })
-        .then(authJWT => {
-          dispatch(fetchUser({ authJWT }))
-        })
-        .catch(err => {
-          console.log(err);
-        })
-
-    })();
-  }, []);
+      await authAPI(getAccessTokenSilently, {}, dispatch, fetchUser);
+      await authAPI(getAccessTokenSilently, {}, dispatch, fetchCampaigns);
+    })();   
+  }, [dispatch, getAccessTokenSilently]);
 
   if (isLoading) {
     return (<LoadingSpinner />)

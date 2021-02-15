@@ -1,4 +1,4 @@
-export default interface Campaign {
+export default interface Token {
     _id: String,
     name: String,
     image: String,

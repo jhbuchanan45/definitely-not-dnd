@@ -1,11 +1,11 @@
 import { Card, CardActionArea, CardContent, makeStyles, Theme, Typography } from '@material-ui/core';
-import { title } from 'process';
+import { Link as RouterLink } from 'react-router-dom';
 import React from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
     brief: (map: any) => ({
         width: "370px",
-        height: "100%",
+        height: "230px",
         maxHeight: '230px',
         backgroundColor: 'lightblue',
         backgroundImage: `url(${map?.image})`,
@@ -25,22 +25,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     title: {
         color: '#FFF',
         textAlign: 'right',
-        textShadow: '-0.5px 0.5px 1px #000, 0.5px 0.5px 1px #000, 0.5px -0.5px 0 #000, -0.5px -0.5px 0 #000'
+        textShadow: '-0.5px 0.5px 2px #000, 0.5px 0.5px 2px #000, 0.5px -0.5px 0 #000, -0.5px -0.5px 0 #000'
     }
 }
 ));
 
 const MapBrief = (props: any) => {
-    const {map: any} = props || {};
+    const {map} = props;
 
-    const { brief, title, titleBar } = useStyles({});
+    const { brief, title, titleBar } = useStyles(map);
 
     return (
             <Card className={brief}>
-                <CardActionArea style={{ height: '100%' }}>
+                <CardActionArea style={{ height: '100%' }} component={RouterLink} to={`/campaigns/${map.campaignId}/maps/${map._id}`}>
                     <CardContent style={{ padding: '0' }}>
                         <div className={titleBar}>
-                            <Typography className={title} variant="h5">Map</Typography>
+                            <Typography className={title} variant="h5">{map ? map.name : "Map"}</Typography>
                         </div>
                     </CardContent>
                 </CardActionArea>

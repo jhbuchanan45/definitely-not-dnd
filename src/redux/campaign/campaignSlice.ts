@@ -92,8 +92,18 @@ const campaign = createSlice({
     }
 })
 
-export const selectAllCampaigns = state => state.campaign.campaigns
+export const selectAllCampaigns = (state, excludeID?) => {
+    if (excludeID) {
+        const lastRealID = selectCampaignByID(state, excludeID)?._id;
+        return state.campaign.campaigns.filter(c => c._id !== lastRealID)
+    } else {
+        console.log(excludeID)
+        return state.campaign.campaigns
+    }
+}
 
-export const selectCampaignByID = (state, campaignID) => state.campaign.campaigns?.find(campaign => campaign.id === campaignID)
+export const selectCampaignByID = (state, campaignID) => { 
+    return (state.campaign.campaigns?.find((campaign: Campaign) => campaign._id === campaignID)) || state.campaign.campaigns[0] 
+}
 
 export default campaign.reducer;

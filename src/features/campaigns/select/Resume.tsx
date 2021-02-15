@@ -1,6 +1,8 @@
 import { Grid, makeStyles, Theme, Typography } from '@material-ui/core';
 import React from 'react'
 import { useSelector } from 'react-redux';
+import Campaign from '../../../redux/campaign/campaign';
+import { selectCampaignByID } from '../../../redux/campaign/campaignSlice';
 import CampaignBrief from '../CampaignBrief';
 import MapBrief from '../MapBrief';
 import TokenBrief from '../TokenBrief';
@@ -18,13 +20,14 @@ const useStyles = makeStyles((theme: Theme) => ({
         gap: theme.spacing(1) + "px"
     },
     gridParent: {
-        overflowX: 'auto',
+        overflowX: 'hidden',
         overflowY: 'hidden',
         position: 'relative',
         scrollbarColor: '#00000000 #00000000',
         scrollbarWidth: 'thin',
         '&:hover': {
             scrollbarColor: theme.palette.primary.light + '#00000000',
+            overflowX: 'auto'
         }
     }
 
@@ -33,14 +36,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Resume = () => {
     const { container, playerGrid, gridParent } = useStyles();
 
-    const lastCampaignID = useSelector((state: any) => state.user.lastCampaign);
+    const lastCampaignID = useSelector((state: any) => state.user.details?.lastCampaign);
+    const lastCampaign: Campaign = useSelector(state => selectCampaignByID(state, lastCampaignID));
 
     const tokens = () => {
         let tokenBriefs: any[] = [];
 
-        for (let i = 0; i < 5; i++) {
-            tokenBriefs.push(<div><TokenBrief size={100} /></div>)
-        }
+        lastCampaign?.players?.forEach(player => { tokenBriefs.push(<div><TokenBrief size={"100px"} token={player} /></div>) })
 
         return tokenBriefs
     }
@@ -58,7 +60,7 @@ const Resume = () => {
                             <Typography variant="h5">Current Map</Typography>
                         </Grid>
                         <Grid item xs>
-                            <MapBrief />
+                            <MapBrief map={{...lastCampaign?.lastMap, campaignId: lastCampaign?._id}} />
                         </Grid>
                     </Grid>
                 </Grid>

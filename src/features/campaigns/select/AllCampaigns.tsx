@@ -25,13 +25,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 const AllCampaigns = () => {
     const { gridContainer, grid } = useStyles();
 
-    const campaigns = [...useSelector(selectAllCampaigns)];
+    const lastCampaignID = useSelector((state: any) => state.user.details?.lastCampaign);
+    const campaigns = [...useSelector(state => selectAllCampaigns(state, lastCampaignID))];
 
     return (
         <div className={gridContainer}>
             <Grid container spacing={2} className={grid}>
                 {
-                    campaigns.map((campaign: Campaign) => (<Grid item><CampaignBrief campaignId={campaign._id} /></Grid>)
+                    campaigns.map((campaign: Campaign) => {return (<Grid item><CampaignBrief campaignId={campaign._id} /></Grid>)}
                     )
                 }
             </Grid>

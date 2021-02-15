@@ -1,5 +1,6 @@
 import { Card, CardActionArea, CardContent, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import React from 'react'
+import { Link as RouterLink } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import Campaign from '../../redux/campaign/campaign';
 import { selectCampaignByID } from '../../redux/campaign/campaignSlice';
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     title: {
         color: '#FFF',
         textAlign: 'right',
-        textShadow: '-0.5px 0.5px 1px #000, 0.5px 0.5px 1px #000, 0.5px -0.5px 0 #000, -0.5px -0.5px 0 #000'
+        textShadow: '-0.5px 0.5px 2px #000, 0.5px 0.5px 2px #000, 0.5px -0.5px 0 #000, -0.5px -0.5px 0 #000'
     }
 }));
 
@@ -42,15 +43,20 @@ const CampaignBrief = (props: Props) => {
     const campaign = useSelector(state => selectCampaignByID(state, props.campaignId))
     const { brief, titleBar, title } = useStyles(campaign);
 
+    const briefContents = () => {
+        return (
+        <CardActionArea style={{ height: '100%' }} component={RouterLink} to={`/campaigns/${campaign?._id}`} >
+            <CardContent style={{ padding: '0' }}>
+                <div className={titleBar}>
+                    <Typography className={title} variant="h5">{campaign?.name}</Typography>
+                </div>
+            </CardContent>
+        </CardActionArea>)
+    }
+
     return (
         <Card className={brief}>
-            <CardActionArea style={{height: '100%'}}>
-                <CardContent style={{padding: '0'}}> 
-                    <div className={titleBar}>
-                        <Typography className={title} variant="h5">{campaign?.name}</Typography>
-                    </div>
-                </CardContent>
-            </CardActionArea>
+            {briefContents()}
         </Card>
     )
 }

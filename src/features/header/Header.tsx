@@ -5,6 +5,8 @@ import mainPages from "../common/mainPages";
 import { useAuth0 } from "@auth0/auth0-react";
 import { updateUser } from '../../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
+import { createCampaign, fetchCampaigns } from '../../redux/campaign/campaignSlice';
+import { FillCampaign, MakeFullCampaign } from '../common/CampaignCreator';
 
 const useStyles = makeStyles((theme: Theme) => ({
     logo: {
@@ -53,6 +55,37 @@ const Header = () => {
         });
     };
 
+    // temp for dev
+    const make3Campaigns = () => {
+        const campaigns = [
+            {
+                name: "Hoard of the Ice Queen",
+                image: "https://media-waterdeep.cursecdn.com/attachments/6/718/cover4k.jpg"               
+            },
+            {
+                name: "Curse of Strahd",
+                image: "https://media-waterdeep.cursecdn.com/attachments/8/220/cos-cover-4k.jpg"
+            },
+            {
+                name: "Storm King's Thunder",
+                image: "https://media-waterdeep.cursecdn.com/attachments/2/734/sktcover.png"
+            }
+        ]
+
+        getAccessTokenSilently({
+            audience: `https://api.definitelynotdnd.com`,
+          })
+            .then(authJWT => {
+                campaigns.forEach((campaign: any) => {
+                    dispatch(createCampaign({authJWT, campaign}))
+                });
+            })
+            .catch(err => {
+              console.log(err);
+            })
+            
+    }
+
     return (
         <header>
             <AppBar>
@@ -61,7 +94,8 @@ const Header = () => {
                         <Typography variant="h5" className={logo} component={Link} to={"/"} color="inherit">Definitely Not DND</Typography>
                         {getMenuButtons()} 
                         <div className={stretchy}></div>
-                        <Button color="inherit" onClick={() => putUser({lastCampaign: "lol420"})}>Update User</Button>
+                        <MakeFullCampaign />
+                        <FillCampaign />
                         {
                             !isAuthenticated ? 
                                 (<Button color="inherit" onClick={() => loginWithRedirect()}>Log In</Button>) :
