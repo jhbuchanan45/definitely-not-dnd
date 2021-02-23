@@ -5,14 +5,13 @@ import mainTheme from '../styles/mainTheme';
 import { Auth0Provider, useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import MainWrapper from '../components/MainWrapper';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
-import AuthCall from '../util/AuthCall';
-import fetchUser from '../util/queries/fetchUser';
 import QueryWrapper from '../components/QueryWrapper';
-
+import LoadingSpinner from '../components/LoadingSpinner';
 
 function MyApp({ Component, pageProps }) {
   const queryClient = new QueryClient();
 
+  // for flicker removing (load styles on server generation then switch to client on load)
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
@@ -31,15 +30,30 @@ function MyApp({ Component, pageProps }) {
       redirectUri={origin}
     >
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={mainTheme}>
+         <ThemeProvider theme={mainTheme}>
           <QueryWrapper>
-            <MainWrapper>
-              <Component {...pageProps} />
-            </MainWrapper>
+            <LoadingPage>
+              <MainWrapper>
+                <Component {...pageProps} />
+              </MainWrapper>
+            </LoadingPage>
           </QueryWrapper>
         </ThemeProvider>
       </QueryClientProvider>
     </Auth0Provider>
+  )
+}
+
+const LoadingPage = (props: any) => {
+  const { isLoading } = useAuth0();
+
+  return (
+    <>
+      { isLoading
+        ? <LoadingSpinner />
+        : props.children
+      }
+    </>
   )
 }
 

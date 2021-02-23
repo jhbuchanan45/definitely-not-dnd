@@ -1,20 +1,37 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import React, { createContext } from 'react'
 import { useQuery } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import AuthCall from '../util/AuthCall';
-import fetchUser from '../util/queries/fetchUser';
-
-export const userContext = createContext({});
+import { fetchCampaign, fetchUser } from '../util/queries/fetch/fetchDefault';
+import LoadingSpinner from './LoadingSpinner';
 
 const QueryWrapper = (props: any) => {
-    const { getAccessTokenSilently } = useAuth0();
+    const { getAccessTokenSilently: getAuthToken } = useAuth0();
 
-    const { data } = useQuery('user', () => AuthCall(getAccessTokenSilently, {}, fetchUser));
+    const { data: user, ...userRes } = useQuery('user', async () => await fetchUser(getAuthToken));
+
+    const { data: campaigns } = useQuery('campaigns', async () => await fetchCampaign(getAuthToken));
+
+    if (userRes.isLoading) {
+        return (
+            <LoadingSpinner />
+        )
+    }
+
+    if (userRes.isError) {
+        return (
+            <div>
+                User Loading ERROR
+            </div>
+        )
+    }
 
     return (
-        <userContext.Provider value={data}>
+        <>
             {props.children}
-        </userContext.Provider>
+            <ReactQueryDevtools initialIsOpen={false} />
+        </>
     )
 }
 
