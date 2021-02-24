@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://maniacmc.ddns.net/api",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   responseType: "json"
 });
