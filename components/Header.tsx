@@ -70,8 +70,6 @@ const Header = () => {
                         <Link href="/"><Typography variant="h5" className={logo} color="inherit">Definitely Not DND</Typography></Link>
                         {getMenuButtons()} 
                         <div className={stretchy}></div>
-                        {/* <MakeFullCampaign />
-                        <FillCampaign /> */}
                         {
                             !isAuthenticated ? 
                                 (<Button color="inherit" onClick={() => loginWithRedirect()}>Log In</Button>) :

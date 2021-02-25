@@ -16,6 +16,8 @@ export const fetchUser = async (getAuthAPI) => await fetchDefault(getAuthAPI, '/
 
 export const fetchTokens = async (getAuthAPI, campaignID) => await fetchDefault(getAuthAPI, `/token/campaign/${campaignID}`);
 
+export const fetchPlayers = async (getAuthAPI, campaignID) => await fetchDefault(getAuthAPI, `/player/campaign/${campaignID}`);
+
 export const fetchMaps = async (getAuthAPI, campaignID) => await fetchDefault(getAuthAPI, `/map/campaign/${campaignID}`);
 
 export default fetchDefault;

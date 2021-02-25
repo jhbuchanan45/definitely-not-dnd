@@ -2,7 +2,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import React, { createContext } from 'react'
 import { useQuery } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import AuthCall from '../util/AuthCall';
 import { fetchCampaign, fetchUser } from '../util/queries/fetch/fetchDefault';
 import LoadingSpinner from './LoadingSpinner';
 

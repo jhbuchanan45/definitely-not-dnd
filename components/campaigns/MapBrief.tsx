@@ -5,7 +5,7 @@ import React from 'react';
 const useStyles = makeStyles((theme: Theme) => ({
     brief: (map: any) => ({
         width: "370px",
-        height: "230px",
+        height: "100%",
         maxHeight: '230px',
         backgroundColor: 'lightblue',
         backgroundImage: `url(${map?.image})`,
@@ -31,7 +31,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 ));
 
 interface Props {
-    map: any
+    map: any,
+    style?: any
 }
 
 const MapBrief = (props: Props) => {
@@ -39,7 +40,7 @@ const MapBrief = (props: Props) => {
     const { brief, title, titleBar } = useStyles(map);
 
     return (
-        <Card className={brief}>
+        <Card className={brief} style={props.style}>
             <Link href={`/campaigns/${map.campaignId}/maps/${map._id}`}>
                 <CardActionArea style={{ height: '100%' }}>
                     <CardContent style={{ padding: '0' }}>

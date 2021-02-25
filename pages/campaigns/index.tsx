@@ -1,8 +1,11 @@
 import React from 'react'
 import CampaignWrapper from '../../components/campaigns/CampaignWrapper';
-import { Divider, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Button, Divider, makeStyles, Theme, Typography } from '@material-ui/core';
 import Resume from '../../components/campaigns/select/Resume';
 import AllCampaigns from '../../components/campaigns/select/AllCampaigns';
+import { useMutation } from 'react-query';
+import AddButton from '../../components/AddButton';
+import { postCampaign } from '../../util/queries/create/postDefault';
 
 const useStyles = makeStyles((theme: Theme) => ({
     divider: {
@@ -17,17 +20,24 @@ const useStyles = makeStyles((theme: Theme) => ({
         height: '100%',
         boxSizing: 'border-box',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        position: "relative"
+    },
+    floatButton: {
+        position: "absolute",
+        right: theme.spacing(1),
+        top: theme.spacing(1)
     }
 }));
 
 const CampaignSelect = (props: any) => {
-    const { divider, container } = useStyles();
+    const { divider, container, floatButton } = useStyles();
 
     const lastCampaign = props.campaigns.find(({ _id }) => _id === props.lastCampaignID) || props.campaigns[0];
 
     return (
         <div className={container}>
+            <AddButton className={floatButton} postFunc={postCampaign} defaultItem={{name: "New Campaign", image: "huh"}} invalidate={["campaigns", "user"]} label="new" />
             <Resume lastCampaign={lastCampaign} />
             <Divider className={divider} />
             <Typography variant="h4">All Campaigns</Typography>

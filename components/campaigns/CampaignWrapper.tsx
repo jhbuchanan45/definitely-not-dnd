@@ -27,7 +27,7 @@ const campaignWrapper = Component => props => {
         )
     }
 
-    return <Component campaigns={campaigns} lastCampaign={user.lastCampaign} />
+    return <Component campaigns={campaigns} lastCampaign={user?.lastCampaign} refetchCampaigns={campaignRes.refetch} />
 }
 
 export default campaignWrapper;
