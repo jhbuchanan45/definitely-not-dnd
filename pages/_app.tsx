@@ -7,6 +7,7 @@ import MainWrapper from '../components/MainWrapper';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import QueryWrapper from '../components/QueryWrapper';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { SnackbarProvider } from 'notistack';
 
 function MyApp({ Component, pageProps }) {
   const queryClient = new QueryClient();
@@ -19,8 +20,6 @@ function MyApp({ Component, pageProps }) {
     }
   }, []);
 
-  Component = withAuthenticationRequired(Component);
-
   const origin = typeof window !== 'undefined' && window.location.origin ? window.location.origin : '';
 
   return (
@@ -29,17 +28,21 @@ function MyApp({ Component, pageProps }) {
       clientId="XM47lNMLjVlOwczg9SxK1rtwqtOzjUWa"
       redirectUri={origin}
     >
-      <QueryClientProvider client={queryClient}>
-         <ThemeProvider theme={mainTheme}>
-          <QueryWrapper>
-            <LoadingPage>
-              <MainWrapper>
-                <Component {...pageProps} />
-              </MainWrapper>
-            </LoadingPage>
-          </QueryWrapper>
-        </ThemeProvider>
-      </QueryClientProvider>
+      <LoginRedirect>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={mainTheme}>
+            <SnackbarProvider>
+              <QueryWrapper>
+                <LoadingPage>
+                  <MainWrapper>
+                    <Component {...pageProps} />
+                  </MainWrapper>
+                </LoadingPage>
+              </QueryWrapper>
+            </SnackbarProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </LoginRedirect>
     </Auth0Provider>
   )
 }
@@ -56,5 +59,11 @@ const LoadingPage = (props: any) => {
     </>
   )
 }
+
+const loginRequired = (props: any) => {
+  return (<>{props.children}</>)
+}
+
+const LoginRedirect = withAuthenticationRequired(loginRequired);
 
 export default MyApp;
