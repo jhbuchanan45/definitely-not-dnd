@@ -4,7 +4,7 @@ import '../styles/globals.css';
 import mainTheme from '../styles/mainTheme';
 import { Auth0Provider, useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import MainWrapper from '../components/MainWrapper';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import QueryWrapper from '../components/QueryWrapper';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { SnackbarProvider } from 'notistack';
