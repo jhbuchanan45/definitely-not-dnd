@@ -42,7 +42,7 @@ const EditCampaign = (props: any) => {
                         <FieldArray name="readIds" render={arrayHelpers => (
                             <>
                                 {
-                                    values.readIds.map((readIds, index) =>
+                                    values.readIds?.map((readIds, index) =>
                                     (<div>
                                         <Field component={TextField} name={`readIds.${index}`} label="Can Read" variant="filled" color="secondary" />
                                         <Button onClick={() => arrayHelpers.remove(index)}>Remove Reader</Button>
@@ -56,7 +56,7 @@ const EditCampaign = (props: any) => {
                         <FieldArray name="writeIds" render={arrayHelpers => (
                             <>
                                 {
-                                    values.writeIds.map((writeId, index) =>
+                                    values.writeIds?.map((writeId, index) =>
                                     (<div>
                                         <Field component={TextField} name={`writeIds.${index}`} label="Can Write" variant="filled" color="secondary" />
                                         <Button onClick={() => arrayHelpers.remove(index)}>Remove Writer</Button>

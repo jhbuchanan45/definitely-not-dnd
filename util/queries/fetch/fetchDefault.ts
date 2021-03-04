@@ -46,4 +46,10 @@ export const fetchPlayers = async (getAuthAPI, campaignID) => await fetchDefault
 
 export const fetchMaps = async (getAuthAPI, campaignID) => await fetchDefault(getAuthAPI, `/map/campaign/${campaignID}`);
 
+export const useMap = (getAuthAPI, useQuery, enqueueSnackbar, mapID) => {
+    return useQuery(['map', mapID], async () => await fetchDefault(getAuthAPI, `map/${mapID}`), {
+        ...defaultError(enqueueSnackbar, null, "Loaded User Successfully") 
+    })
+}
+
 export default fetchDefault;

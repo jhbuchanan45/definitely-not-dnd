@@ -1,3 +1,4 @@
+import { Console } from 'console';
 import { UseMutationResult } from 'react-query';
 import API from '../../API';
 import { getAuth } from '../../AuthCall';
@@ -16,6 +17,23 @@ export const updateCampaign = (getAuthAPI, useMutation, enqueueSnackbar, queryCl
     return useMutation(campaign => updateDefault(getAuthAPI, `/campaign/${campaignID}`, { campaign }), {
         onSuccess: () => {
             queryClient.invalidateQueries('user');
+            queryClient.invalidateQueries('campaigns');
+            if (process.env.NODE_ENV === "development") {
+                enqueueSnackbar("Updated campaign", { variant: "success" })
+            }
+        },
+        onFailure: (err: any) => {
+            enqueueSnackbar(err, { variant: "error" })
+        }
+    });
+}
+
+export const updateMap = (getAuthAPI, useMutation, enqueueSnackbar, queryClient, mapID): UseMutationResult  => {
+    return useMutation(map => updateDefault(getAuthAPI, `/map/${mapID}`, { map }), {
+        onSuccess: (data) => {
+            console.log(data);
+            queryClient.invalidateQueries(['map', mapID]);
+            queryClient.invalidateQueries(['maps', data.campaignID])
             queryClient.invalidateQueries('campaigns');
             if (process.env.NODE_ENV === "development") {
                 enqueueSnackbar("Updated campaign", { variant: "success" })
