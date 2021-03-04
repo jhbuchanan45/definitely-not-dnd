@@ -10,9 +10,35 @@ const fetchDefault = async (getAccessTokenSilently, endpoint) => {
     return response.data;
 }
 
-export const fetchCampaign = async (getAuthAPI) => await fetchDefault(getAuthAPI, '/campaign');
+const defaultError = (enqueueSnackbar, errMsg?, successMsg?) => ({
+    onError: (err: any) => {
+        enqueueSnackbar(errMsg ? errMsg : err, { variant: "error" })
+    },
+    onSuccess: (data: any) => {
+        if (process.env.NODE_ENV === "development") {
+            enqueueSnackbar(successMsg, { variant: "success" });
+        }
+    }
+})
 
-export const fetchUser = async (getAuthAPI) => await fetchDefault(getAuthAPI, '/user');
+const fetchCampaign = async (getAuthAPI) => await fetchDefault(getAuthAPI, '/campaign');
+export const useCampaign = (getAuthAPI, useQuery, enqueueSnackbar) => {
+    return useQuery('campaigns', async () => await fetchCampaign(getAuthAPI), {
+        onError: (err: any) => {
+            enqueueSnackbar(err, { variant: "error" })
+        }
+    });
+}
+
+
+const fetchUser = async (getAuthAPI) => await fetchDefault(getAuthAPI, '/user');
+export const userQuery = (getAuthAPI, enqueueSnackbar): [any, any, any] => {
+    return ['user', async () => await fetchUser(getAuthAPI), { ...defaultError(enqueueSnackbar, null, "Loaded User Successfully") }]
+}
+export const useUser = (getAuthAPI, useQuery, enqueueSnackbar) => {
+    return useQuery(...userQuery(getAuthAPI, enqueueSnackbar));
+}
+
 
 export const fetchTokens = async (getAuthAPI, campaignID) => await fetchDefault(getAuthAPI, `/token/campaign/${campaignID}`);
 

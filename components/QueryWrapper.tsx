@@ -1,34 +1,21 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useSnackbar } from 'notistack';
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { fetchCampaign, fetchUser } from '../util/queries/fetch/fetchDefault';
+import { useCampaign, useUser, userQuery } from '../util/queries/fetch/fetchDefault';
 import LoadingSpinner from './LoadingSpinner';
 
 const QueryWrapper = (props: any) => {
     const { getAccessTokenSilently: getAuthToken } = useAuth0();
     const { enqueueSnackbar } = useSnackbar();
 
-    const { data: user, ...userRes } = useQuery('user', async () => await fetchUser(getAuthToken));
-
-    const { data: campaigns } = useQuery('campaigns', async () => await fetchCampaign(getAuthToken), {
-        onError: (err: any) => {
-            enqueueSnackbar(err, {variant: "error"})
-        }
-    });
+    const { data: user, ...userRes } = useUser(getAuthToken, useQuery, enqueueSnackbar);
+    const { data: campaigns } = useCampaign(getAuthToken, useQuery, enqueueSnackbar);
 
     if (userRes.isLoading) {
         return (
             <LoadingSpinner />
-        )
-    }
-
-    if (userRes.isError) {
-        return (
-            <div>
-                User Loading ERROR
-            </div>
         )
     }
 

@@ -3,13 +3,14 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { fetchMaps, fetchPlayers, fetchTokens } from '../../util/queries/fetch/fetchDefault';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Grid, Typography, Switch, makeStyles } from '@material-ui/core';
+import { Grid, Typography, Switch, makeStyles, Button } from '@material-ui/core';
 import MapBrief from '../../components/campaigns/MapBrief';
 import TokenBrief from '../../components/campaigns/TokenBrief';
 import campaignWrapper from '../../components/campaigns/CampaignWrapper';
 import CampaignBrief from '../../components/campaigns/CampaignBrief';
 import AddButton from '../../components/AddButton';
 import { postMaps, postPlayers, postTokens } from '../../util/queries/create/postDefault';
+import Link from 'next/link';
 
 const useStyles = makeStyles((theme: any) => ({
     grid: {
@@ -64,38 +65,41 @@ const EditCampaign = (props: any) => {
     const bigCampaignView = () => {
 
         return (
-            <Grid container direction="row" style={{ height: "100%" }}>
-                <Grid item xs={7} className={grid}>
-                    <div className={container}>
-                        <Typography variant="h4">Maps</Typography>
+            <>
+                <Link href={`/campaigns/edit/${campaignID}`}><Button>Edit Campaign</Button></Link>
+                <Grid container direction="row" style={{ height: "100%" }}>
+                    <Grid item xs={7} className={grid}>
+                        <div className={container}>
+                            <Typography variant="h4">Maps</Typography>
+                            <div className={mapContainer}>
+                                <Grid container className={scrollContainer} alignItems="flex-start" spacing={1}>
+                                    {maps?.map((map: any) => (<Grid item><MapBrief map={map} style={{ height: "230px" }} /></Grid>))}
+                                </Grid>
+                            </div>
+                            <AddButton className={floatButton} postFunc={postMaps} defaultItem={{ campaignId: campaignID }} invalidate={[["maps", campaignID]]} label="New Map" />
+                        </div>
+                    </Grid>
+                    <Grid item xs={5} spacing={1} className={grid}>
+                        <Typography variant="h4">Tokens</Typography>
                         <div className={mapContainer}>
-                            <Grid container className={scrollContainer} alignItems="flex-start" spacing={1}>
-                                {maps?.map((map: any) => (<Grid item><MapBrief map={map} style={{ height: "230px" }} /></Grid>))}
-                            </Grid>
+                            <div className={tokenSubContainer}>
+                                <Typography variant="h5">Players</Typography>
+                                <Grid container spacing={1}>
+                                    {players?.map((token: any) => (<Grid item><TokenBrief token={token} size="80px" /></Grid>))}
+                                </Grid>
+                                <AddButton className={floatButton} postFunc={postPlayers} defaultItem={{ campaignId: campaignID, image: "huh" }} invalidate={["players"]} label="New Player" />
+                            </div>
+                            <div className={tokenSubContainer}>
+                                <Typography variant="h5">NPCs</Typography>
+                                <Grid container spacing={1}>
+                                    {tokens?.map((token: any) => (<Grid item><TokenBrief token={token} size="80px" /></Grid>))}
+                                </Grid>
+                                <AddButton className={floatButton} postFunc={postTokens} defaultItem={{ campaignId: campaignID, image: "huh" }} invalidate={["tokens"]} label="New NPC" />
+                            </div>
                         </div>
-                        <AddButton className={floatButton} postFunc={postMaps} defaultItem={{ campaignId: campaignID }} invalidate={[["maps", campaignID]]} label="New Map" />
-                    </div>
-                </Grid>
-                <Grid item xs={5} spacing={1} className={grid}>
-                    <Typography variant="h4">Tokens</Typography>
-                    <div className={mapContainer}>
-                        <div className={tokenSubContainer}>
-                            <Typography variant="h5">Players</Typography>
-                            <Grid container spacing={1}>
-                                {players?.map((token: any) => (<Grid item><TokenBrief token={token} size="80px" /></Grid>))}
-                            </Grid>
-                            <AddButton className={floatButton} postFunc={postPlayers} defaultItem={{ campaignId: campaignID, image: "huh" }} invalidate={["players"]} label="New Player" />
-                        </div>
-                        <div className={tokenSubContainer}>
-                            <Typography variant="h5">NPCs</Typography>
-                            <Grid container spacing={1}>
-                                {tokens?.map((token: any) => (<Grid item><TokenBrief token={token} size="80px" /></Grid>))}
-                            </Grid>
-                            <AddButton className={floatButton} postFunc={postTokens} defaultItem={{ campaignId: campaignID, image: "huh" }} invalidate={["tokens"]} label="New NPC" />
-                        </div>
-                    </div>
-                </Grid>
-            </Grid >
+                    </Grid>
+                </Grid >
+            </>
         )
     }
 

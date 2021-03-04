@@ -1,13 +1,15 @@
 import React from 'react'
-import { fetchCampaign, fetchUser } from "../../util/queries/fetch/fetchDefault";
+import { useCampaign, useUser } from "../../util/queries/fetch/fetchDefault";
 import { useQuery } from 'react-query';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useSnackbar } from 'notistack';
 
 const campaignWrapper = Component => props => {
     const { getAccessTokenSilently: getAuthToken } = useAuth0();
+    const { enqueueSnackbar } = useSnackbar();
 
-    const { data: user } = useQuery('user', async () => await fetchUser(getAuthToken));
-    const { data: campaigns, ...campaignRes } = useQuery('campaigns', async () => await fetchCampaign(getAuthToken));
+    const { data: user } = useUser(getAuthToken, useQuery, enqueueSnackbar);
+    const { data: campaigns, ...campaignRes } = useCampaign(getAuthToken, useQuery, enqueueSnackbar);
 
     // TODO - Add custom component to guide through new campaign creation
 

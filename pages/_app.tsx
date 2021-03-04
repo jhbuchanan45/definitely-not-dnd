@@ -10,7 +10,13 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { SnackbarProvider } from 'notistack';
 
 function MyApp({ Component, pageProps }) {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 150000
+      }
+    }
+  });
 
   // for flicker removing (load styles on server generation then switch to client on load)
   useEffect(() => {
