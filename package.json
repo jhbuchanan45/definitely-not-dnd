@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.3.0",
+    "@jhbuchanan45/dnd-models": "^1.2.2",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
     "formik": "^2.2.6",
     "formik-material-ui": "^3.0.1",
+    "mongoose": "^5.11.19",
     "next": "10.0.7",
     "notistack": "^1.0.4",
     "react": "17.0.1",

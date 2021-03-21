@@ -10,6 +10,8 @@ import { updateCampaign } from '../../../util/queries/update/updateDefault';
 import { Formik, Form, Field, FieldArray, ArrayHelpers } from 'formik';
 import { deleteCampaign } from '../../../util/queries/delete/deleteDefault';
 import DeleteButton from '../../../components/DeleteButton';
+import { Campaign } from '@jhbuchanan45/dnd-models';
+import mongoose from 'mongoose/browser';
 
 const EditCampaign = (props: any) => {
     const router = useRouter();
@@ -25,19 +27,31 @@ const EditCampaign = (props: any) => {
     const campaignDelete = deleteCampaign(getAuthToken, useMutation, enqueueSnackbar, queryClient, campaignID);
 
     const submitUpdate = async (values, { setSubmitting }) => {
-        console.log(values);
-        await campaignUpdate.mutateAsync(values);
+        await campaignUpdate.mutate(values);
         setSubmitting(false);
+    }
+
+    const validate = values => {
+        const doc = new mongoose.Document({ ...values }, Campaign);
+        let errors: any = doc.validateSync()?.errors;
+        let formikErrors = {};
+        if (errors) {
+            for (const err in errors) {
+                formikErrors[err] = errors[err].message;
+            }
+            console.log(formikErrors);
+            return formikErrors;
+        }
     }
 
     return (
         <>
             <DeleteButton onClick={campaignDelete.mutate}>Delete Me!</DeleteButton>
-            <Formik initialValues={{ ...campaign }} onSubmit={submitUpdate} validate={values => { }}>
-                {({ submitForm, values, isSubmitting }) => (
+            <Formik initialValues={{ ...campaign }} onSubmit={submitUpdate} validate={validate}>
+                {({ submitForm, values, isSubmitting, errors }) => (
                     <Form>
-                        <Field component={TextField} fullWidth name="name" label="Name" variant="filled" color="secondary" ></Field>
-                        <Field component={TextField} fullWidth name="image" label="Image" variant="filled" color="secondary" ></Field>
+                        <Field component={TextField} fullWidth name="name" label="Name" variant="filled" color="secondary"></Field>
+                        <Field component={TextField} fullWidth name="image" label="Image" variant="filled" color="secondary"></Field>
                         <Typography variant="h6">Who Can Read This</Typography>
                         <FieldArray name="readIds" render={arrayHelpers => (
                             <>

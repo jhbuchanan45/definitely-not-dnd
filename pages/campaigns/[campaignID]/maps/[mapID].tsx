@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { Button, Typography } from '@material-ui/core';
-import { Field, FieldArray, Form, Formik } from 'formik';
+import { Button } from '@material-ui/core';
+import { Field, Form, Formik } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -25,7 +25,7 @@ const ViewMap = () => {
 
     const submitUpdate = async (values, { setSubmitting }) => {
         console.log(values);
-        await mapUpdate.mutateAsync(values);
+        await mapUpdate.mutate(values);
         setSubmitting(false);
     }
 

@@ -3,7 +3,6 @@ import CampaignWrapper from '../../components/campaigns/CampaignWrapper';
 import { Button, Divider, makeStyles, Theme, Typography } from '@material-ui/core';
 import Resume from '../../components/campaigns/select/Resume';
 import AllCampaigns from '../../components/campaigns/select/AllCampaigns';
-import { useMutation } from 'react-query';
 import AddButton from '../../components/AddButton';
 import { postCampaign } from '../../util/queries/create/postDefault';
 
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const CampaignSelect = (props: any) => {
     const { divider, container, floatButton } = useStyles();
 
-    const lastCampaign = props.campaigns.find(({ _id }) => _id === props.lastCampaignID) || props.campaigns[0];
+    const lastCampaign = props.campaigns.find(({ _id }) => _id === props.lastCampaign) || props.campaigns[0];
 
     return (
         <div className={container}>
