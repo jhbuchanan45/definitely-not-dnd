@@ -85,14 +85,14 @@ const EditCampaign = (props: any) => {
                             <div className={tokenSubContainer}>
                                 <Typography variant="h5">Players</Typography>
                                 <Grid container spacing={1}>
-                                    {players?.map((token: any) => (<Grid item><TokenBrief token={token} size="80px" /></Grid>))}
+                                    {players?.map((token: any) => (<Grid item><TokenBrief token={token} size="80px" variant="players" /></Grid>))}
                                 </Grid>
                                 <AddButton className={floatButton} postFunc={postPlayers} defaultItem={{ campaignId: campaignID, image: "huh" }} invalidate={["players"]} label="New Player" />
                             </div>
                             <div className={tokenSubContainer}>
                                 <Typography variant="h5">NPCs</Typography>
                                 <Grid container spacing={1}>
-                                    {tokens?.map((token: any) => (<Grid item><TokenBrief token={token} size="80px" /></Grid>))}
+                                    {tokens?.map((token: any) => (<Grid item><TokenBrief token={token} size="80px" variant="tokens" /></Grid>))}
                                 </Grid>
                                 <AddButton className={floatButton} postFunc={postTokens} defaultItem={{ campaignId: campaignID, image: "huh" }} invalidate={["tokens"]} label="New NPC" />
                             </div>
