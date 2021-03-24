@@ -46,7 +46,7 @@ const Resume = (props: Props) => {
     const tokens = () => {
         let tokenBriefs: any[] = [];
 
-        lastCampaign?.players?.forEach(player => { tokenBriefs.push(<div><TokenBrief size={"100px"} token={player} variant="players" /></div>) })
+        lastCampaign?.players?.forEach(player => { tokenBriefs.push(<div key={player._id}><TokenBrief size={"100px"} token={player} variant="players" /></div>) })
 
         return tokenBriefs
     }

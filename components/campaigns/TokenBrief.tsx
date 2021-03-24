@@ -21,6 +21,15 @@ const TokenBrief = (props: Props) => {
 
     const { tokenPaper } = useStyles();
 
+    const getLevel = (classes: any[]) => {
+        let tLevel = 0;
+        classes.forEach(({level}) => {
+            tLevel+= level;
+        })
+
+        return tLevel;
+    }
+
     return (
         <Card>
             <Link href={`/campaigns/${token.campaignId}/${variant}/${token._id}`}>
@@ -38,7 +47,7 @@ const TokenBrief = (props: Props) => {
                                     <Typography>{token.race ? token.race : "No Race"}</Typography>
                                 </Grid>
                                 <Grid item>
-                                    <Typography>{"Level " + (token.stats.level ? token.stats.level : "0")}</Typography>
+                                    <Typography>{"Level " + (getLevel(token.classes))}</Typography>
                                 </Grid>
                             </Grid>
                         </Grid>

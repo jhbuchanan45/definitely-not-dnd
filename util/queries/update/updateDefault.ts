@@ -40,7 +40,7 @@ export const updateMap = (getAuthAPI, useMutation, enqueueSnackbar, queryClient,
             }
         },
         onError: (err: any) => {
-            enqueueSnackbar(err, { variant: "error" })
+            enqueueSnackbar(err.message, { variant: "error" })
         }
     });
 }
@@ -57,13 +57,13 @@ export const updateToken = (getAuthAPI, useMutation, enqueueSnackbar, queryClien
             }
         },
         onError: (err: any) => {
-            enqueueSnackbar(err, { variant: "error" })
+            enqueueSnackbar(err.message, { variant: "error" })
         }
     });
 }
 
 export const updatePlayer = (getAuthAPI, useMutation, enqueueSnackbar, queryClient, playerID): UseMutationResult => {
-    return useMutation(player => updateDefault(getAuthAPI, `/player/${playerID}`, { player }, enqueueSnackbar), {
+    return useMutation(player => updateDefault(getAuthAPI, `/player/${playerID}`, { token: player }, enqueueSnackbar), {
         onSuccess: (data) => {
             console.log(data);
             queryClient.invalidateQueries(['player', playerID]);
@@ -74,7 +74,7 @@ export const updatePlayer = (getAuthAPI, useMutation, enqueueSnackbar, queryClie
             }
         },
         onError: (err: any) => {
-            enqueueSnackbar(err, { variant: "error" })
+            enqueueSnackbar(err.message, { variant: "error" })
         }
     });
 }
