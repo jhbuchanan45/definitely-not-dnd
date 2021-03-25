@@ -4,10 +4,10 @@ const getMod = (raw: number): Number => {
 
 export const tokenUI = {
     coreParse: (stat): { total: Number, tMod: Number } => {
-        if (stat.mod !== 0) {
+        if (stat.mod !== 0 && stat.mod) {
             return { total: stat.base, tMod: stat.mod }
         }
-        else if (stat.base !== 0) {
+        else if (stat.base !== 0 && stat.base) {
             return { total: stat.base, tMod: getMod(stat.base) };
         } else {
             let coreStat = stat.raw;
