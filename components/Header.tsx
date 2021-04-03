@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppBar, makeStyles, Toolbar, Typography, Theme, Button, Container} from '@material-ui/core';
+import { AppBar, makeStyles, Toolbar, Typography, Theme, Button, Container } from '@material-ui/core';
 import { useAuth0 } from "@auth0/auth0-react";
 import Link from 'next/link';
 
@@ -38,7 +38,7 @@ const Header = () => {
     ]
 
     const getMenuButtons = () => {
-        return headerData.map(({label, href}) => {
+        return headerData.map(({ label, href }) => {
             return (<Link href={href} key={label}><Button color="inherit">{label}</Button></Link>)
         })
     };
@@ -48,7 +48,7 @@ const Header = () => {
         const campaigns = [
             {
                 name: "Hoard of the Ice Queen",
-                image: "https://media-waterdeep.cursecdn.com/attachments/6/718/cover4k.jpg"               
+                image: "https://media-waterdeep.cursecdn.com/attachments/6/718/cover4k.jpg"
             },
             {
                 name: "Curse of Strahd",
@@ -68,14 +68,14 @@ const Header = () => {
                 <Container maxWidth="xl">
                     <Toolbar>
                         <Link href="/"><Typography variant="h5" className={logo} color="inherit">Definitely Not DND</Typography></Link>
-                        {getMenuButtons()} 
+                        {getMenuButtons()}
                         <div className={stretchy}></div>
                         {
-                            !isAuthenticated ? 
+                            !isAuthenticated ?
                                 (<Button color="inherit" onClick={() => loginWithRedirect()}>Log In</Button>) :
-                                (<Button color="inherit" onClick={() => logout({returnTo: "window.location.origin"})}>Log out</Button>)
+                                (<Button color="inherit" onClick={() => logout({ returnTo: (typeof window !== 'undefined' && window.location.origin) ? window.location.origin : '' })}>Log out</Button>)
                         }
-                    </Toolbar> 
+                    </Toolbar>
                 </Container>
             </AppBar>
             <Toolbar />

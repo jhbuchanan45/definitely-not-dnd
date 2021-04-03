@@ -1,6 +1,6 @@
 import React from 'react'
 import CampaignWrapper from '../../components/campaigns/CampaignWrapper';
-import { Button, Divider, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Divider, makeStyles, Theme, Typography } from '@material-ui/core';
 import Resume from '../../components/campaigns/select/Resume';
 import AllCampaigns from '../../components/campaigns/select/AllCampaigns';
 import AddButton from '../../components/AddButton';
@@ -36,7 +36,7 @@ const CampaignSelect = (props: any) => {
 
     return (
         <div className={container}>
-            <AddButton className={floatButton} postFunc={postCampaign} defaultItem={{name: "New Campaign", image: "huh"}} invalidate={["campaigns", "user"]} label="new" />
+            <AddButton className={floatButton} postFunc={postCampaign} defaultItem={{ name: "New Campaign", image: "huh" }} invalidate={["campaigns", "user"]} label="new" />
             <Resume lastCampaign={lastCampaign} />
             <Divider className={divider} />
             <Typography variant="h4">All Campaigns</Typography>

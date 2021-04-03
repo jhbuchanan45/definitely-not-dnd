@@ -1,5 +1,6 @@
 import { Grid, makeStyles, Theme, Typography } from '@material-ui/core';
 import React from 'react'
+import { Token } from '../../../util/TokenParser';
 import CampaignBrief from '../CampaignBrief';
 import MapBrief from '../MapBrief';
 import TokenBrief from '../TokenBrief';
@@ -46,7 +47,7 @@ const Resume = (props: Props) => {
     const tokens = () => {
         let tokenBriefs: any[] = [];
 
-        lastCampaign?.players?.forEach(player => { tokenBriefs.push(<div key={player._id}><TokenBrief size={"100px"} token={player} variant="players" /></div>) })
+        lastCampaign?.players?.forEach(player => { tokenBriefs.push(<div key={player._id}><TokenBrief size={"100px"} token={new Token(player)} variant="players" /></div>) })
 
         return tokenBriefs
     }

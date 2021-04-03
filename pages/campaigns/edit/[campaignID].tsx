@@ -11,7 +11,7 @@ import { Formik, Form, Field, FieldArray, ArrayHelpers } from 'formik';
 import { deleteCampaign } from '../../../util/queries/delete/deleteDefault';
 import DeleteButton from '../../../components/DeleteButton';
 import { Campaign } from '@jhbuchanan45/dnd-models';
-import mongoose from 'mongoose/browser';
+// import mongoose from 'mongoose/browser';
 
 const EditCampaign = (props: any) => {
     const router = useRouter();
@@ -32,16 +32,16 @@ const EditCampaign = (props: any) => {
     }
 
     const validate = values => {
-        const doc = new mongoose.Document({ ...values }, Campaign);
-        let errors: any = doc.validateSync()?.errors;
-        let formikErrors = {};
-        if (errors) {
-            for (const err in errors) {
-                formikErrors[err] = errors[err].message;
-            }
-            console.log(formikErrors);
-            return formikErrors;
-        }
+        // const doc = new mongoose.Document({ ...values }, Campaign);
+        // let errors: any = doc.validateSync()?.errors;
+        // let formikErrors = {};
+        // if (errors) {
+        //     for (const err in errors) {
+        //         formikErrors[err] = errors[err].message;
+        //     }
+        //     console.log(formikErrors);
+        //     return formikErrors;
+        // }
     }
 
     return (

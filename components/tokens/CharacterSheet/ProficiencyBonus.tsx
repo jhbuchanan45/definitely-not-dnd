@@ -1,21 +1,21 @@
-import { Container, Grid, Switch, Typography } from '@material-ui/core';
+import { Avatar, Container, Grid, Typography } from '@material-ui/core';
 import React from 'react';
 
 interface Props {
-    inspiration: boolean,
+    profBonus: any,
     update: any
 }
 
-const Inspiration = (props: Props) => {
+const ProficiencyBonus = (props: Props) => {
     return (
         <>
             <Grid container alignItems="center" spacing={1}>
                 <Grid item>
-                    <Switch checked={props.inspiration} onChange={() => props.update.mutate({ inspiration: !props.inspiration })} />
+                    <Avatar>{(props.profBonus<0?"":"+") + props.profBonus}</Avatar>
                 </Grid>
                 <Grid item>
                     <Typography variant="h6">
-                        Inspiration
+                        Proficiency Bonus
                     </Typography>
                 </Grid>
             </Grid>
@@ -23,4 +23,4 @@ const Inspiration = (props: Props) => {
     )
 }
 
-export default Inspiration;
+export default ProficiencyBonus;

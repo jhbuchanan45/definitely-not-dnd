@@ -1,16 +1,16 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
-import { fetchMaps, fetchPlayers, fetchTokens } from '../../util/queries/fetch/fetchDefault';
+import { fetchMaps, usePlayers, useTokens } from '../../util/queries/fetch/fetchDefault';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Grid, Typography, Switch, makeStyles, Button } from '@material-ui/core';
 import MapBrief from '../../components/campaigns/MapBrief';
 import TokenBrief from '../../components/campaigns/TokenBrief';
 import campaignWrapper from '../../components/campaigns/CampaignWrapper';
-import CampaignBrief from '../../components/campaigns/CampaignBrief';
 import AddButton from '../../components/AddButton';
 import { postMaps, postPlayers, postTokens } from '../../util/queries/create/postDefault';
 import Link from 'next/link';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme: any) => ({
     grid: {
@@ -57,9 +57,10 @@ const EditCampaign = (props: any) => {
     const campaign = props.campaigns.find(({ _id }) => _id === campaignID);
 
     const { getAccessTokenSilently: getAuthToken } = useAuth0();
+    const { enqueueSnackbar } = useSnackbar();
 
-    const { data: tokens, ...tokenQuery } = useQuery(['tokens', campaignID], () => fetchTokens(getAuthToken, campaignID));
-    const { data: players } = useQuery(['players', campaignID], () => fetchPlayers(getAuthToken, campaignID))
+    const { data: tokens, ...tokenQuery } = useTokens(getAuthToken, useQuery, enqueueSnackbar, campaignID);
+    const { data: players } = usePlayers(getAuthToken, useQuery, enqueueSnackbar, campaignID);
     const { data: maps } = useQuery(['maps', campaignID], () => fetchMaps(getAuthToken, campaignID));
 
     const bigCampaignView = () => {

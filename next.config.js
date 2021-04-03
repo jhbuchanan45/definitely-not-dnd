@@ -1,21 +1,9 @@
-module.exports = {
-    target: "serverless"
-    // exportPathMap: async function (
-    //   defaultPathMap,
-    //   { dev, dir, outDir, distDir, buildId }
-    // ) {
-    //   return {
-    //     '/': { page: '/' },
-    //     '/campaigns': { page: '/campaigns' },  
-    //   }
-    // },
-    // async rewrites() {
-    //     return [
-    //       {
-    //         source: '/:any*',
-    //         destination: '/',
-    //       },
-    //     ];
-    //   },
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+module.exports = withBundleAnalyzer({
+  target: "serverless",
+  future: {
+    webpack5: true
   }
-  
+})

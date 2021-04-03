@@ -1,6 +1,7 @@
 import { Avatar, Card, CardActionArea, CardContent, Grid, makeStyles, Theme, Typography } from '@material-ui/core';
 import Link from 'next/link';
 import React from 'react'
+import { Token } from '../../util/TokenParser';
 
 const useStyles = makeStyles((theme: Theme) => ({
     tokenPaper: {
@@ -11,24 +12,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface Props {
-    token: any,
+    token: Token,
     size?: string,
     variant: "players" | "tokens"
 }
 
 const TokenBrief = (props: Props) => {
-    const { token, size, variant } = props || { size: '100px' };
+    const { token: fullToken, size, variant } = props || { size: '100px' };
 
+    const { token } = fullToken;
     const { tokenPaper } = useStyles();
-
-    const getLevel = (classes: any[]) => {
-        let tLevel = 0;
-        classes.forEach(({level}) => {
-            tLevel+= level;
-        })
-
-        return tLevel;
-    }
 
     return (
         <Card>
@@ -47,7 +40,7 @@ const TokenBrief = (props: Props) => {
                                     <Typography>{token.race ? token.race : "No Race"}</Typography>
                                 </Grid>
                                 <Grid item>
-                                    <Typography>{"Level " + (getLevel(token.classes))}</Typography>
+                                    <Typography>{"Level " + fullToken.getLevel()}</Typography>
                                 </Grid>
                             </Grid>
                         </Grid>

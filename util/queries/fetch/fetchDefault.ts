@@ -1,5 +1,6 @@
 import API from '../../API';
 import { getAuth } from '../../AuthCall';
+import { Token } from '../../TokenParser';
 
 const fetchDefault = async (getAccessTokenSilently, endpoint) => {
 
@@ -39,135 +40,49 @@ export const useUser = (getAuthAPI, useQuery, enqueueSnackbar) => {
     return useQuery(...userQuery(getAuthAPI, enqueueSnackbar));
 }
 
-const parseModifiers = (inToken: any) => {
-    const token = { ...inToken };
-
-    const util = {
-        int: {
-            t1: (mod, label) => {
-                const target = token.stats[mod.target]?.class || [];
-                token.stats[mod.target].class = target;
-                target.push({ mode: mod.mode, value: mod.value, src: label });
-            },
-            t2: (mod, label) => {
-                const target = token.stats[mod.target][mod.t2]?.class || [];
-                token.stats[mod.target][mod.t2].class = target;
-                target.push({ mode: mod.mode, value: mod.value, src: label })
-            }
-        },
-        str: {
-            t2: (mod, label) => {
-                // handle both init and existing class value cases
-                const target = token.stats[mod.target].class?.[mod.t2] || [];
-                token.stats[mod.target].class = token.stats[mod.target].class || {};
-                token.stats[mod.target].class[mod.t2] = target;
-
-                // handle value being string instead of array
-                if (typeof mod.value === 'string') {
-                    mod.value = [mod.value];
-                }
-                mod.value?.forEach(val => { target.push({ value: val, src: label }) })
-            }
-        },
-        prof: {
-            t1: (mod, label) => {
-                token.stats[mod.target].prof.pClass = { flag: true, src: label };
-            },
-            t2: (mod, label) => {
-                token.stats[mod.target][mod.t2].prof.pClass = { flag: true, src: label };
-            }
-        }
-    }
-
-    // parse class
-    token.classes?.forEach((tClass) => {
-        const { _id: pClass } = tClass;
-
-        pClass.modifiers.forEach((mod) => {
-            switch (mod.target) {
-                case "HP": {
-                    // requires target + t2 + ?mode
-                    if (mod.t2 === "hit") {
-                        // handle non-standard usecase
-                        const target = token.stats.HP.hit.class || [];
-                        token.stats.HP.hit.class = target;
-
-                        if (typeof mod.value === 'string') {
-                            mod.value = [mod.value];
-                        }
-
-                        mod.value?.forEach(val => { target.push({ value: tClass.level + val, src: pClass.label }) })
-                        break;
-                    }
-                }
-                case "core": {
-                    // requires target + t2 + mode
-                }
-                case "savingThrows": {
-                    // require target + t2 + mode
-                }
-                case "speed": {
-                    // requires target + t2 + mode
-                }
-                case "vision": {
-                    // requires target + t2 + mode
-                }
-                case "skills": {
-                    // require target + t2 + mode
-
-                    // for adding proficiency
-                    if (mod.mode === "prof" && (mod.target === "skills" || mod.target === "savingThrows")) {
-                        util.prof.t2(mod, pClass.label);
-                    } else {
-                        // for number changes
-                        util.int.t2(mod, pClass.label)
-                    }
-                    break;
-                }
-                case "initiative": {
-                    // requires target + mode
-                }
-                case "proficiency": {
-                    // requires target + mode
-                }
-                case "AC": {
-                    // requires target + mode
-                    // overflow from shared previous cases
-                    util.int.t1(mod, pClass.label);
-                    break;
-                }
-                case "proficiencies": {
-                    // require target + t2
-                }
-                case "resist": {
-                    // requires target + t2
-                    util.str.t2(mod, pClass.label);
-                    break;
-                }
-            }
-        })
-    })
-    return token;
-}
-
 const fetchTokenDefault = async (getAuthAPI, tokenID, variant) => {
     const player = await fetchDefault(getAuthAPI, `/${variant}/${tokenID}`);
 
-    return parseModifiers(player);
+    return new Token(player);
 };
+
+const fetchTokensDefault = async (getAuthAPI, campaignID, variant) => {
+    const tokens = await fetchDefault(getAuthAPI, `/${variant}/campaign/${campaignID}`);
+
+    return tokens.map(token => new Token(token));
+};
+
 
 // will parse token data for displaying in sheet
-export const fetchTokens = async (getAuthAPI, campaignID) => {
-    const initialRes = await fetchDefault(getAuthAPI, `/token/campaign/${campaignID}`);
+// export const fetchTokens = async (getAuthAPI, campaignID) => {
+//     const initialRes = await fetchDefault(getAuthAPI, `/token/campaign/${campaignID}`);
 
-    return initialRes?.map((token) => parseModifiers(token));
-};
+//     return initialRes;
+// };
 
-export const fetchPlayers = async (getAuthAPI, campaignID) => await fetchDefault(getAuthAPI, `/player/campaign/${campaignID}`);
+// export const fetchPlayers = async (getAuthAPI, campaignID) => await fetchDefault(getAuthAPI, `/player/campaign/${campaignID}`);
+
+export const usePlayers = (getAuthAPI, useQuery, enqueueSnackbar, campaignID) => {
+    return useQuery(['players', campaignID], async () => await fetchTokensDefault(getAuthAPI, campaignID, "player"), {
+        ...defaultError(enqueueSnackbar, null, "Loaded Players Successfully")
+    })
+}
+
+export const useTokens = (getAuthAPI, useQuery, enqueueSnackbar, campaignID) => {
+    return useQuery(['tokens', campaignID], async () => await fetchTokensDefault(getAuthAPI, campaignID, "token"), {
+        ...defaultError(enqueueSnackbar, null, "Loaded Tokens Successfully")
+    })
+}
 
 export const usePlayer = (getAuthAPI, useQuery, enqueueSnackbar, playerID) => {
     return useQuery(['player', playerID], async () => await fetchTokenDefault(getAuthAPI, playerID, "player"), {
         ...defaultError(enqueueSnackbar, null, "Loaded Player Successfully")
+    })
+}
+
+export const useToken = (getAuthAPI, useQuery, enqueueSnackbar, tokenID) => {
+    return useQuery(['token', tokenID], async () => await fetchTokenDefault(getAuthAPI, tokenID, "token"), {
+        ...defaultError(enqueueSnackbar, null, "Loaded Token Successfully")
     })
 }
 

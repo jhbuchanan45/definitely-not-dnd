@@ -20,7 +20,7 @@ const PlayerViewer = () => {
 
     return (
         <>
-            {player && <CharacterSheet token={player} update={playerUpdate} />}
+            {player?.token && <CharacterSheet token={player} update={playerUpdate} />}
         </>
     )
 }
