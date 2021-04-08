@@ -31,7 +31,7 @@ export class Token {
         })
 
         // Parse Items
-        token.inventory.forEach((item) => {
+        token.inventory?.forEach((item) => {
             switch (item.details.itemType) {
                 case "armour": { this.util.items.applyArmourMods(item); break; }
 
