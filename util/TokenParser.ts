@@ -424,7 +424,7 @@ export class Token {
 
             // handle maxHP
             calcMHP: {
-                for (let modRef in HP.max.mods) {
+                for (let modRef in HP.max?.mods) {
                     const mod = HP.max.mods[modRef];
                     switch (mod.mode) {
                         case "add": { mHP += mod.value; break; }
@@ -438,7 +438,7 @@ export class Token {
 
             // handle temp HP
             calcTHP: {
-                for (let modRef in HP.tmp.mods) {
+                for (let modRef in HP.tmp?.mods) {
                     const mod = HP.tmp.mods[modRef];
                     switch (mod.mode) {
                         case "add": { tHP += mod.value; break; }
@@ -448,7 +448,7 @@ export class Token {
             }
 
             // handle hit dice
-            HP.hit.mods.forEach(mod => {
+            HP.hit?.mods?.forEach(mod => {
                 const splitDice = mod.value.split('d');
                 const curHit = hitDiceObj['d' + splitDice[1]];
 
