@@ -1,4 +1,4 @@
-import {createMuiTheme, Theme} from '@material-ui/core/styles';
+import { createMuiTheme, Theme } from '@material-ui/core/styles';
 
 const colours = {
     primary: "#524947",
@@ -9,7 +9,7 @@ const colours = {
     lightInfo: "#DEC7C1"
 }
 
-const mainTheme: Theme = createMuiTheme({
+export const mainThemeObject: any = {
     breakpoints: {
         values: {
             xs: 0,
@@ -39,9 +39,9 @@ const mainTheme: Theme = createMuiTheme({
             dark: colours.darkInfo,
             light: colours.lightInfo
         },
-            background: {
-                paper: colours.info,
-            }
+        background: {
+            paper: colours.info,
+        }
     },
     typography: {
         fontFamily: "\"Domine\",\"Roboto\", \"Helvetica\", \"Arial\",\"sans-serif\""
@@ -49,6 +49,8 @@ const mainTheme: Theme = createMuiTheme({
     shape: {
         borderRadius: 2,
     },
-})
+}
+
+const mainTheme: Theme = createMuiTheme(mainThemeObject)
 
 export default mainTheme;

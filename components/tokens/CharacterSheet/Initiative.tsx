@@ -7,18 +7,18 @@ interface Props {
     update: any
 }
 
-const ArmourClass = (props: Props) => {
+const Initiative = (props: Props) => {
     return (
         <>
             <Grid container alignItems="center" justify="center" direction="column">
                 <Grid xs item container alignItems="center" justify="center">
                     <Avatar style={{ width: "60px", height: "60px" }}>
-                        <Typography variant="h4">{props.token.UI.armourClassParse().total}</Typography>
+                        <Typography align="center" variant="h4">{(props.token.UI.initiativeParse() < 0 ? "" : "+") + props.token.UI.initiativeParse()}</Typography>
                     </Avatar>
                 </Grid>
                 <Grid item>
                     <Typography align="center" variant="subtitle2">
-                        Armour Class
+                        Initiative
                     </Typography>
                 </Grid>
             </Grid>
@@ -26,4 +26,4 @@ const ArmourClass = (props: Props) => {
     )
 }
 
-export default ArmourClass;
+export default Initiative;

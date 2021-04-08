@@ -1,15 +1,20 @@
-import { makeStyles, Theme } from '@material-ui/core';
+import { createMuiTheme, makeStyles, Theme, ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import { Token } from '../../util/TokenParser';
+import ArmourClass from './CharacterSheet/ArmourClass';
+import HitDeathSaving from './CharacterSheet/HitDeathSaving';
+import HP from './CharacterSheet/HP';
+import Initiative from './CharacterSheet/Initiative';
 import Inspiration from './CharacterSheet/Inspiration';
 import ProficiencyBonus from './CharacterSheet/ProficiencyBonus';
 import SavingThrows from './CharacterSheet/SavingThrows';
 import SkillCheck from './CharacterSheet/SkillCheck';
+import Speed from './CharacterSheet/Speed';
 
 const useStyles = makeStyles((theme: Theme) => ({
     mainGrid: {
         gridTemplateColumns: "repeat(12, 110px)",
-        gridTemplateRows: "65px repeat(12, 60px) auto",
+        gridTemplateRows: "65px repeat(12, 56px) auto",
         height: "100%",
         display: "grid",
         justifyItems: "center",
@@ -21,6 +26,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     gridWrapper: {
         display: "flex",
+    },
+    gridChild: {
+        width: "100%",
+        height: "100%",
+        overflow: "hidden",
+        display: "flex",
+        // flexDirection: "column"
     }
 }))
 
@@ -30,7 +42,7 @@ interface Props {
 }
 
 const CharacterSheet = (props: Props) => {
-    const { mainGrid, gridWrapper } = useStyles();
+    const { mainGrid, gridWrapper, gridChild } = useStyles();
     const { token, update: updateToken } = props;
     let coreMods = {};
 
@@ -55,29 +67,60 @@ const CharacterSheet = (props: Props) => {
 
     const renderInspiration = () => {
         return (
-            <div style={{ gridArea: "2/2/3/4" }}><Inspiration update={updateToken} inspiration={token.token.inspiration} /></div>
+            <div className={gridChild} style={{ gridArea: "2/2/3/4" }}><Inspiration update={updateToken} inspiration={token.token.inspiration} /></div>
         )
     }
 
     const renderProfBonus = () => {
         return (
-            <div style={{ gridArea: "3/2/4/4" }}><ProficiencyBonus update={updateToken} profBonus={token.UI.proficiencyParse()} /></div>
+            <div className={gridChild} style={{ gridArea: "3/2/4/4" }}><ProficiencyBonus update={updateToken} profBonus={token.UI.proficiencyParse()} /></div>
         )
     }
 
     const renderSavingThrows = () => {
         return (
-            <div style={{ gridArea: "4/2/7/4" }}><SavingThrows update={updateToken} token={token} /></div>
+            <div className={gridChild} style={{ gridArea: "4/2/7/4" }}><SavingThrows update={updateToken} token={token} /></div>
         )
     }
 
     const renderSkillChecks = () => {
         return (
-            <div style={{ gridArea: "7/2/15/4", alignSelf: "start" }}><SkillCheck update={updateToken} token={token} /></div>
+            <div className={gridChild} style={{ gridArea: "7/2/15/4", alignSelf: "start" }}><SkillCheck update={updateToken} token={token} /></div>
+        )
+    }
+
+    const renderAC = () => {
+        return (
+            <div className={gridChild} style={{ gridArea: "2/4/4/5" }}><ArmourClass update={updateToken} token={token} /></div>
+        )
+    }
+
+    const renderInitiative = () => {
+        return (
+            <div className={gridChild} style={{ gridArea: "2/5/4/6" }}><Initiative update={updateToken} token={token} /></div>
+        )
+    }
+
+    const renderSpeed = () => {
+        return (
+            <div className={gridChild} style={{ gridArea: "2/6/4/7" }}><Speed update={updateToken} token={token} /></div>
+        )
+    }
+
+    const renderHP = () => {
+        return (
+            <div className={gridChild} style={{ gridArea: "4/4/6/7" }}><HP update={updateToken} token={token} /></div>
+        )
+    }
+
+    const renderHitDice = () => {
+        return (
+            <div className={gridChild} style={{ gridArea: "6/4/8/7" }}><HitDeathSaving update={updateToken} token={token} /></div>
         )
     }
 
     return (
+
         <div className={gridWrapper}>
             <div className={mainGrid}>
                 {renderCoreStats()}
@@ -85,6 +128,11 @@ const CharacterSheet = (props: Props) => {
                 {renderProfBonus()}
                 {renderSavingThrows()}
                 {renderSkillChecks()}
+                {renderAC()}
+                {renderInitiative()}
+                {renderSpeed()}
+                {renderHP()}
+                {renderHitDice()}
             </div>
         </div>
     )

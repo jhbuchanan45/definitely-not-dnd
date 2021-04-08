@@ -56,11 +56,17 @@ const SavingThrows = (props: Props) => {
 
     return (
         <>
-            <Typography variant="h6">
-                Saving Throws
-            </Typography>
-            <Grid container direction="column">
-                {renderThrows()}
+            <Grid container alignItems="center" justify="center" direction="column">
+                <Grid item>
+                    <Grid container direction="column">
+                        {renderThrows()}
+                    </Grid>
+                </Grid>
+                <Grid item>
+                    <Typography variant="subtitle2">
+                        Saving Throws
+                </Typography>
+                </Grid>
             </Grid>
         </>
     )

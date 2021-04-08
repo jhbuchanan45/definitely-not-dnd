@@ -14,7 +14,7 @@ const ProficiencyBonus = (props: Props) => {
                     <Avatar>{(props.profBonus<0?"":"+") + props.profBonus}</Avatar>
                 </Grid>
                 <Grid item>
-                    <Typography variant="h6">
+                    <Typography variant="subtitle2">
                         Proficiency Bonus
                     </Typography>
                 </Grid>

@@ -33,26 +33,12 @@ export class Token {
         // Parse Items
         token.inventory.forEach((item) => {
             switch (item.details.itemType) {
-                case "armour": { this.applyArmourMods(item); break; }
+                case "armour": { this.util.items.applyArmourMods(item); break; }
 
             }
         })
 
         // TODO - PARSE RACE & PARSE CUSTOM
-    }
-
-    private applyArmourMods = (item) => {
-        if (item.details.baseAC.value !== 0) {
-            this.applyModifier(item.details.baseAC, item.details.name);
-        }
-
-        if (item.details.coreMod) {
-            this.applyModifier(item.details.coreMod, item.details.name);
-        }
-
-        item.details.mods?.forEach((mod) => {
-            this.applyModifier(mod, item.details.name);
-        })
     }
 
     private applyModifier = (mod, source, tClass = 1) => {
@@ -61,8 +47,8 @@ export class Token {
                 // requires target + t2 + ?mode
                 if (mod.t2 === "hit") {
                     // handle non-standard usecase
-                    const target = this.token.stats.HP.hit.class || [];
-                    this.token.stats.HP.hit.class = target;
+                    const target = this.token.stats.HP.hit.mods || [];
+                    this.token.stats.HP.hit.mods = target;
 
                     if (typeof mod.value === 'string') {
                         mod.value = [mod.value];
@@ -124,24 +110,39 @@ export class Token {
     }
 
     private util = {
+        items: {
+            applyArmourMods: (item) => {
+                if (item.details.baseAC.value !== 0) {
+                    this.applyModifier(item.details.baseAC, item.details.name);
+                }
+
+                if (item.details.coreMod) {
+                    this.applyModifier(item.details.coreMod, item.details.name);
+                }
+
+                item.details.mods?.forEach((mod) => {
+                    this.applyModifier(mod, item.details.name);
+                })
+            }
+        },
         int: {
             t1: (mod, label) => {
-                const target = this.token.stats[mod.target]?.class || [];
-                this.token.stats[mod.target].class = target;
+                const target = this.token.stats[mod.target]?.mods || [];
+                this.token.stats[mod.target].mods = target;
                 target.push({ mode: mod.mode, value: mod.value, src: label });
             },
             t2: (mod, label) => {
-                const target = this.token.stats[mod.target][mod.t2]?.class || [];
-                this.token.stats[mod.target][mod.t2].class = target;
+                const target = this.token.stats[mod.target][mod.t2]?.mods || [];
+                this.token.stats[mod.target][mod.t2].mods = target;
                 target.push({ mode: mod.mode, value: mod.value, src: label })
             }
         },
         str: {
             t2: (mod, label) => {
                 // handle both init and existing class value cases
-                const target = this.token.stats[mod.target].class?.[mod.t2] || [];
-                this.token.stats[mod.target].class = this.token.stats[mod.target].class || {};
-                this.token.stats[mod.target].class[mod.t2] = target;
+                const target = this.token.stats[mod.target].mods?.[mod.t2] || [];
+                this.token.stats[mod.target].mods = this.token.stats[mod.target].mods || {};
+                this.token.stats[mod.target].mods[mod.t2] = target;
 
                 // handle value being string instead of array
                 if (typeof mod.value === 'string') {
@@ -152,19 +153,19 @@ export class Token {
         },
         prof: {
             t1: (mod, label) => {
-                const target = this.token.stats[mod.target]?.prof.class || [];
-                this.token.stats[mod.target].prof.class = target;
+                const target = this.token.stats[mod.target]?.prof.mods || [];
+                this.token.stats[mod.target].prof.mods = target;
                 target.push({ level: mod.value, src: label });
             },
             t2: (mod, label) => {
-                const target = this.token.stats[mod.target][mod.t2]?.prof.class || [];
-                this.token.stats[mod.target][mod.t2].prof.class = target;
+                const target = this.token.stats[mod.target][mod.t2]?.prof.mods || [];
+                this.token.stats[mod.target][mod.t2].prof.mods = target;
                 target.push({ level: mod.value, src: label });
             }
         },
         coreMod: (mod, label) => {
-            const target = this.token.stats[mod.target]?.class || [];
-            this.token.stats[mod.target].class = target;
+            const target = this.token.stats[mod.target]?.mods || [];
+            this.token.stats[mod.target].mods = target;
             target.push({ mode: mod.mode, cap: mod.value, coreMod: mod.coreMod, src: label });
         }
     }
@@ -185,8 +186,8 @@ export class Token {
         if (!(level < 4) || level < 0) { level = 0 };
 
         // handle class
-        if (prof.class) {
-            prof.class.forEach(mod => {
+        if (prof.mods) {
+            prof.mods.forEach(mod => {
                 if (level < mod.level && mod.level < 4) {
                     level = mod.level;
                 }
@@ -238,14 +239,14 @@ export class Token {
 
             // handle classes
 
-            for (let mod in skillMod.class) {
-                switch (skillMod.class[mod].mode) {
+            for (let mod in skillMod.mods) {
+                switch (skillMod.mods[mod].mode) {
                     case 'add': {
-                        tThrow += skillMod.class[mod].value;
+                        tThrow += skillMod.mods[mod].value;
                         break;
                     }
                     case 'set': {
-                        return { mod: skillMod.class[mod].value, prof: profLevel.type };
+                        return { mod: skillMod.mods[mod].value, prof: profLevel.type };
                     }
                 }
             }
@@ -275,9 +276,9 @@ export class Token {
                 let coreStat = stat.raw;
 
                 // parse class modifiers if present
-                if (stat.class) {
-                    for (let modRef in stat.class) {
-                        const mod = stat.class[modRef];
+                if (stat.mods) {
+                    for (let modRef in stat.mods) {
+                        const mod = stat.mods[modRef];
                         switch (mod.mode) {
                             case 'add': {
                                 coreStat = coreStat + mod.value;
@@ -304,15 +305,15 @@ export class Token {
                 tProf = (Math.floor(this.getLevel() / 5) + 2)
 
                 // check class modifiers
-                if (prof.class) {
-                    for (let mod in prof.class) {
-                        switch (prof.class[mod].mode) {
+                if (prof.mods) {
+                    for (let mod in prof.mods) {
+                        switch (prof.mods[mod].mode) {
                             case 'add': {
-                                tProf += prof.class[mod].value;
+                                tProf += prof.mods[mod].value;
                                 break;
                             }
                             case 'set': {
-                                return prof.class[mod].value;
+                                return prof.mods[mod].value;
                             }
                         }
                     }
@@ -333,12 +334,132 @@ export class Token {
             return this.genericSkillParse(skill, "skills", skillMod.check);
         },
 
-        armourClassParse: () => {
+        armourClassParse: (): { total: Number, base: Number, mod: Number, coreMods: String[] } => {
+            // supports add, set, coreMod and base modes
             const AC = this.token.stats.AC;
-            let tAC = 10;
+            let baseAC = 10;
+            let modAC = 0;
+            let coreModAC = 0;
+            let coreMods: String[] = [];
 
-            // TODO - Add mode = "coreBonus" (value to string) to armour? to add appropriate dex modifiers
-            // TODO - Also optional limit to numerical values needed in modifier
+            if (AC.mods) {
+                for (let modRef in AC.mods) {
+                    const mod = AC.mods[modRef];
+                    switch (mod.mode) {
+                        case "add": { modAC += mod.value; break; }
+                        case "set": { return { total: mod.value, base: mod.value, coreMods: [], mod: 0 } }
+                        case "coreMod": {
+                            const coreModVal = this.UI.coreParse(mod.coreMod).tMod;
+                            coreModAC += (mod.cap > 0)
+                                ? (coreModVal <= mod.cap) ? coreModVal : mod.cap
+                                : coreModVal
+                            coreMods.push(mod.coreMod);
+                            break;
+                        }
+                        case "base": { baseAC = mod.value > baseAC ? mod.value : baseAC; break; }
+                    }
+                }
+            }
+
+            return { total: baseAC + modAC + coreModAC, base: baseAC, mod: modAC, coreMods };
+        },
+
+        initiativeParse: () => {
+            const init = this.token.stats.initiative;
+
+            let tInit = this.UI.coreParse("DEX").tMod;
+
+            if (init.base === 0) {
+                // check modifiers
+                if (init.mods) {
+                    for (let mod in init.mods) {
+                        switch (init.mods[mod].mode) {
+                            case 'add': {
+                                tInit += init.mods[mod].value;
+                                break;
+                            }
+                            case 'set': {
+                                return init.mods[mod].value;
+                            }
+                        }
+                    }
+                }
+
+                return tInit;
+            } else {
+                return init.base;
+            }
+        },
+
+        speedParse: (speedType: string): Number => {
+            const speed = this.token.stats.speed[speedType];
+
+            let tSpeed = speed.base;
+
+            if (speed.mods) {
+                for (let modRef in speed.mods) {
+                    const mod = speed.mods[modRef];
+                    switch (mod.mode) {
+                        case "add": {
+                            tSpeed += mod.value;
+                        }
+                        case "set": {
+                            return mod.value;
+                        }
+                    }
+                }
+            }
+
+            return tSpeed;
+        },
+
+        hpParse: (): { cHP: Number, mHP: Number, tHP: Number, hitDice: String[] } => {
+            const HP = this.token.stats.HP;
+
+            let cHP: Number = HP.current;
+            let mHP: Number = HP.max.base;
+            let tHP: Number = HP.max.base;
+            let hitDiceObj = {};
+            let hitDice: String[] = [];
+
+            // handle maxHP
+            calcMHP: {
+                for (let modRef in HP.max.mods) {
+                    const mod = HP.max.mods[modRef];
+                    switch (mod.mode) {
+                        case "add": { mHP += mod.value; break; }
+                        case "set": { mHP = mod.value; break calcMHP; }
+                    }
+                }
+            }
+
+            // handle current HP
+            if (cHP > mHP) { cHP = mHP; HP.current = mHP; }
+
+            // handle temp HP
+            calcTHP: {
+                for (let modRef in HP.tmp.mods) {
+                    const mod = HP.tmp.mods[modRef];
+                    switch (mod.mode) {
+                        case "add": { tHP += mod.value; break; }
+                        case "set": { tHP = mod.value; break calcTHP; }
+                    }
+                }
+            }
+
+            // handle hit dice
+            HP.hit.mods.forEach(mod => {
+                const splitDice = mod.value.split('d');
+                const curHit = hitDiceObj['d' + splitDice[1]];
+
+                hitDiceObj['d' + splitDice[1]] = curHit ? (curHit + parseInt(splitDice[0])) : parseInt(splitDice[0])
+            });
+
+            hitDice = Object.keys(hitDiceObj).map((dice) => {
+                return hitDiceObj[dice] + dice;
+            })
+
+            return { cHP, mHP, tHP, hitDice };
         }
     }
 

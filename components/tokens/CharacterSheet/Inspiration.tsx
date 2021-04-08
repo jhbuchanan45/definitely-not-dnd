@@ -14,7 +14,7 @@ const Inspiration = (props: Props) => {
                     <Switch checked={props.inspiration} onChange={() => props.update.mutate({ inspiration: !props.inspiration })} />
                 </Grid>
                 <Grid item>
-                    <Typography variant="h6">
+                    <Typography variant="subtitle2">
                         Inspiration
                     </Typography>
                 </Grid>
